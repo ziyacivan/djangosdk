@@ -1,6 +1,6 @@
 # AgentResponse
 
-**Module:** `django_ai_sdk.agents.response`
+**Module:** `djangosdk.agents.response`
 
 `AgentResponse` is the unified response object returned by every `handle()` / `ahandle()` call.
 

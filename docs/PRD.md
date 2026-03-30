@@ -313,7 +313,7 @@ MCP is the universal tool protocol standardized in 2026 by major AI providers (O
 ## 6. Package Structure
 
 ```
-django_ai_sdk/
+djangosdk/
 ├── __init__.py                          # Public API: Agent, tool, ai_settings
 ├── apps.py                              # AiSdkConfig — initializes the provider registry
 ├── conf.py                              # ai_settings accessor (settings.AI_SDK wrapper)
@@ -588,7 +588,7 @@ python manage.py ai_sdk_check
 ### 7.10 Test Helpers
 
 ```python
-from django_ai_sdk.testing import FakeProvider, override_ai_provider
+from djangosdk.testing import FakeProvider, override_ai_provider
 
 class MyTests(TestCase):
     def test_basic_response(self):
@@ -628,7 +628,7 @@ class MyTests(TestCase):
 
 ```python
 # Exposing Django functions as MCP tools
-from django_ai_sdk.mcp import mcp_tool
+from djangosdk.mcp import mcp_tool
 
 @mcp_tool
 def search_products(query: str, max_results: int = 5) -> list[dict]:
@@ -646,7 +646,7 @@ class ResearchAgent(Agent):
 **Embeddings & RAG**
 
 ```python
-from django_ai_sdk.embeddings import embed, similarity_search
+from djangosdk.embeddings import embed, similarity_search
 
 # Create an embedding
 vector = embed("Django ORM is an excellent tool.", provider="openai")
@@ -660,7 +660,7 @@ results = Product.objects.annotate(
 **RAG Tool (integrated with Agent)**
 
 ```python
-from django_ai_sdk.tools.builtins import RAGTool
+from djangosdk.tools.builtins import RAGTool
 
 class DocumentAgent(Agent):
     tools = [RAGTool(model=Document, embedding_field="embedding", text_field="content")]
@@ -699,7 +699,7 @@ AI_SDK = {
 **Cost Tracking**
 
 ```python
-from django_ai_sdk.analytics import cost_report
+from djangosdk.analytics import cost_report
 
 # 7-day cost report
 report = cost_report(days=7)
@@ -717,7 +717,7 @@ AI_SDK = {
     "FAILOVER": ["openai", "anthropic", "groq"],
 }
 # The agent_failed_over signal is emitted
-from django_ai_sdk.signals import agent_failed_over
+from djangosdk.signals import agent_failed_over
 
 @receiver(agent_failed_over)
 def log_failover(sender, from_provider, to_provider, reason, **kwargs):
@@ -729,7 +729,7 @@ def log_failover(sender, from_provider, to_provider, reason, **kwargs):
 **Multi-Agent Orchestration (Five Agentic Patterns)**
 
 ```python
-from django_ai_sdk.orchestration import handoff, pipeline, parallel
+from djangosdk.orchestration import handoff, pipeline, parallel
 
 # Pattern 1: Routing
 class RouterAgent(Agent):
@@ -756,7 +756,7 @@ class WritingAgent(Agent):
 **Agent Memory Layers**
 
 ```python
-from django_ai_sdk.memory import EpisodicMemory, SemanticMemory
+from djangosdk.memory import EpisodicMemory, SemanticMemory
 
 class PersonalAssistant(Agent):
     episodic_memory = EpisodicMemory(max_episodes=100)   # DB
@@ -768,8 +768,8 @@ class PersonalAssistant(Agent):
 **Image & Audio**
 
 ```python
-from django_ai_sdk.images import generate_image
-from django_ai_sdk.audio import transcribe, synthesize
+from djangosdk.images import generate_image
+from djangosdk.audio import transcribe, synthesize
 
 img = generate_image("Sunset over mountains", provider="openai", size="1024x1024")
 text = transcribe(audio_file, provider="openai")  # Whisper
@@ -900,7 +900,7 @@ class Conversation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        app_label = "django_ai_sdk"
+        app_label = "djangosdk"
         ordering = ["-created_at"]
         indexes = [models.Index(fields=["agent_class", "-created_at"])]
 ```
@@ -933,7 +933,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        app_label = "django_ai_sdk"
+        app_label = "djangosdk"
         ordering = ["created_at"]
 ```
 
@@ -944,7 +944,7 @@ class Message(models.Model):
 ### Basic Text Generation
 
 ```python
-from django_ai_sdk.agents import Agent
+from djangosdk.agents import Agent
 
 agent = Agent()
 response = agent.handle("Summarize the Django ORM in 3 bullet points.")
@@ -955,8 +955,8 @@ print(response.usage.total_tokens)
 ### Custom Agent + Tool Calling
 
 ```python
-from django_ai_sdk.agents import Agent
-from django_ai_sdk.tools import tool
+from djangosdk.agents import Agent
+from djangosdk.tools import tool
 
 class SupportAgent(Agent):
     provider = "anthropic"
@@ -992,8 +992,8 @@ print(response.text)
 
 ```python
 from pydantic import BaseModel, Field
-from django_ai_sdk.agents import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 class CodeReview(BaseModel):
     score: int = Field(ge=1, le=10, description="Code quality score")
@@ -1021,8 +1021,8 @@ if review.security_risk:
 ### Extended Thinking (Claude 3.7 Sonnet)
 
 ```python
-from django_ai_sdk.agents import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 class MathAgent(Agent):
     provider = "anthropic"
@@ -1048,7 +1048,7 @@ print("Result:", response.text)
 ```python
 # views.py
 from django.http import StreamingHttpResponse
-from django_ai_sdk.agents import Agent
+from djangosdk.agents import Agent
 
 async def stream_view(request):
     agent = Agent()
@@ -1069,7 +1069,7 @@ async def stream_view(request):
 
 ```python
 # views.py
-from django_ai_sdk.views import ChatAPIView, StreamingChatAPIView
+from djangosdk.views import ChatAPIView, StreamingChatAPIView
 
 class SupportView(ChatAPIView):
     agent_class = SupportAgent
@@ -1103,7 +1103,7 @@ print(r2.usage.cache_read_tokens)   # > 0  (system prompt served from cache)
 
 ```python
 from django.test import TestCase
-from django_ai_sdk.testing import FakeProvider, override_ai_provider
+from djangosdk.testing import FakeProvider, override_ai_provider
 
 class SupportAgentTests(TestCase):
     def test_order_lookup(self):

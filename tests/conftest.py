@@ -19,7 +19,7 @@ def fake_completion(monkeypatch):
             response = agent.handle("Hi")
             assert response.text == "Hello!"
     """
-    from django_ai_sdk.testing.mock_litellm import MockLiteLLMCompletion
+    from djangosdk.testing.mock_litellm import MockLiteLLMCompletion
 
     class _FakeCompletionFixture:
         def __init__(self):
@@ -83,7 +83,7 @@ def reset_mcp_registry():
     Fixture that resets the global MCP tool/resource registries before each test.
     Use when tests register @mcp_tool or @mcp_resource functions.
     """
-    from django_ai_sdk.mcp import decorators
+    from djangosdk.mcp import decorators
     original_tools = dict(decorators._mcp_tools)
     original_resources = dict(decorators._mcp_resources)
     decorators._mcp_tools.clear()

@@ -94,7 +94,7 @@ trace.set_tracer_provider(provider)
 The analytics module tracks token costs per provider:
 
 ```python
-from django_ai_sdk.analytics.cost import CostCalculator
+from djangosdk.analytics.cost import CostCalculator
 
 calc = CostCalculator()
 cost = calc.calculate(

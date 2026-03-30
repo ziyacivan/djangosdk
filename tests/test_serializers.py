@@ -6,8 +6,8 @@ pytestmark = pytest.mark.django_db
 
 
 def test_conversation_serializer_fields():
-    from django_ai_sdk.models.conversation import Conversation
-    from django_ai_sdk.serializers.conversation import ConversationSerializer
+    from djangosdk.models.conversation import Conversation
+    from djangosdk.serializers.conversation import ConversationSerializer
 
     conv = Conversation.objects.create(
         agent_class="myapp.agents.SupportAgent",
@@ -21,9 +21,9 @@ def test_conversation_serializer_fields():
 
 
 def test_message_serializer_fields():
-    from django_ai_sdk.models.conversation import Conversation
-    from django_ai_sdk.models.message import Message
-    from django_ai_sdk.serializers.message import MessageSerializer
+    from djangosdk.models.conversation import Conversation
+    from djangosdk.models.message import Message
+    from djangosdk.serializers.message import MessageSerializer
 
     conv = Conversation.objects.create(agent_class="myapp.SomeAgent")
     msg = Message.objects.create(
@@ -39,9 +39,9 @@ def test_message_serializer_fields():
 
 def test_conversation_serializer_includes_messages():
     """ConversationSerializer should embed related messages if nested."""
-    from django_ai_sdk.models.conversation import Conversation
-    from django_ai_sdk.models.message import Message
-    from django_ai_sdk.serializers.conversation import ConversationSerializer
+    from djangosdk.models.conversation import Conversation
+    from djangosdk.models.message import Message
+    from djangosdk.serializers.conversation import ConversationSerializer
 
     conv = Conversation.objects.create(agent_class="myapp.NestAgent")
     Message.objects.create(conversation=conv, role=Message.Role.USER, content="hi")

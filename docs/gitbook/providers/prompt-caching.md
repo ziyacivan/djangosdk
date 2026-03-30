@@ -35,7 +35,7 @@ The SDK fires signals for cache hits and misses. Connect to them to collect metr
 
 ```python
 from django.dispatch import receiver
-from django_ai_sdk.signals import cache_hit, cache_miss
+from djangosdk.signals import cache_hit, cache_miss
 
 @receiver(cache_hit)
 def on_cache_hit(sender, agent, cache_read_tokens, **kwargs):

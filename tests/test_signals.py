@@ -1,15 +1,15 @@
 from __future__ import annotations
 
 import pytest
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.signals import (
+from djangosdk.agents.base import Agent
+from djangosdk.signals import (
     agent_started,
     agent_completed,
     agent_failed,
     cache_hit,
     cache_miss,
 )
-from django_ai_sdk.testing import FakeProvider, override_ai_provider
+from djangosdk.testing import FakeProvider, override_ai_provider
 
 
 class SimpleAgent(Agent):
@@ -57,7 +57,7 @@ def test_agent_failed_signal_fires():
 
     agent_failed.connect(handler)
     try:
-        from django_ai_sdk.exceptions import ProviderError
+        from djangosdk.exceptions import ProviderError
         bad = FakeProvider()
         bad.complete = lambda r: (_ for _ in ()).throw(ProviderError("boom"))
 
@@ -79,7 +79,7 @@ def test_cache_miss_signal_fires_on_zero_cache_tokens():
 
     cache_miss.connect(handler)
     try:
-        from django_ai_sdk.agents.response import UsageInfo
+        from djangosdk.agents.response import UsageInfo
         fake = FakeProvider(usage=UsageInfo(cache_read_tokens=0))
         with override_ai_provider(fake):
             SimpleAgent().handle("No cache")
@@ -96,7 +96,7 @@ def test_cache_hit_signal_fires_on_nonzero_cache_tokens():
 
     cache_hit.connect(handler)
     try:
-        from django_ai_sdk.agents.response import UsageInfo
+        from djangosdk.agents.response import UsageInfo
         fake = FakeProvider(usage=UsageInfo(cache_read_tokens=100, total_tokens=110))
         with override_ai_provider(fake):
             SimpleAgent().handle("Cache hit")

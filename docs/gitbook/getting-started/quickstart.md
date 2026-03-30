@@ -6,7 +6,7 @@ This guide walks through the most common use cases in 5 minutes.
 
 ```python
 # myapp/agents.py
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class HelloAgent(Agent):
     provider = "openai"
@@ -23,8 +23,8 @@ print(response.usage.total_tokens)
 ## 2. Agent with Tools
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.agents.base import Agent
+from djangosdk.tools.decorator import tool
 
 @tool
 def get_order_status(order_id: str) -> str:
@@ -61,8 +61,8 @@ print(response.text)
 
 ```python
 from pydantic import BaseModel
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.agents.mixins.has_structured_output import HasStructuredOutput
+from djangosdk.agents.base import Agent
+from djangosdk.agents.mixins.has_structured_output import HasStructuredOutput
 
 class Sentiment(BaseModel):
     label: str       # "positive" | "negative" | "neutral"
@@ -84,7 +84,7 @@ print(result.label, result.confidence)
 ## 4. Conversation Persistence
 
 ```python
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class ChatAgent(Agent):
     provider = "openai"
@@ -104,7 +104,7 @@ print(r2.text)  # "Your name is Alice."
 ```python
 # myapp/views.py
 from django.urls import path
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class AssistantAgent(Agent):
     provider = "anthropic"
@@ -124,8 +124,8 @@ urlpatterns = [
 ## 6. Reasoning Models
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 class ThinkingAgent(Agent):
     provider = "anthropic"
@@ -147,7 +147,7 @@ print(response.text)              # The final answer
 ```python
 # myapp/views.py
 from django.http import JsonResponse
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class AsyncAgent(Agent):
     provider = "openai"

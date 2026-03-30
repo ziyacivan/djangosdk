@@ -9,8 +9,8 @@ factory = APIRequestFactory()
 
 
 def _make_view_and_agent():
-    from django_ai_sdk.agents.base import Agent
-    from django_ai_sdk.views.chat import ChatAPIView
+    from djangosdk.agents.base import Agent
+    from djangosdk.views.chat import ChatAPIView
 
     class EchoAgent(Agent):
         provider = "fake"
@@ -23,7 +23,7 @@ def _make_view_and_agent():
 
 
 def test_chat_view_returns_200_with_text():
-    from django_ai_sdk.testing import FakeProvider, override_ai_provider
+    from djangosdk.testing import FakeProvider, override_ai_provider
 
     EchoChatView, _ = _make_view_and_agent()
     fake = FakeProvider(text="Hello from view!")
@@ -48,8 +48,8 @@ def test_chat_view_returns_400_without_prompt():
 
 
 def test_chat_view_returns_500_on_provider_error():
-    from django_ai_sdk.testing import FakeProvider, override_ai_provider
-    from django_ai_sdk.exceptions import ProviderError
+    from djangosdk.testing import FakeProvider, override_ai_provider
+    from djangosdk.exceptions import ProviderError
 
     EchoChatView, _ = _make_view_and_agent()
     bad = FakeProvider()
@@ -65,8 +65,8 @@ def test_chat_view_returns_500_on_provider_error():
 
 
 def test_chat_view_includes_usage_in_response():
-    from django_ai_sdk.agents.response import UsageInfo
-    from django_ai_sdk.testing import FakeProvider, override_ai_provider
+    from djangosdk.agents.response import UsageInfo
+    from djangosdk.testing import FakeProvider, override_ai_provider
 
     EchoChatView, _ = _make_view_and_agent()
     usage = UsageInfo(prompt_tokens=20, completion_tokens=10, total_tokens=30)
@@ -82,7 +82,7 @@ def test_chat_view_includes_usage_in_response():
 
 
 def test_chat_view_no_agent_class_raises():
-    from django_ai_sdk.views.chat import ChatAPIView
+    from djangosdk.views.chat import ChatAPIView
 
     class EmptyView(ChatAPIView):
         pass  # agent_class not set

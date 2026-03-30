@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from django_ai_sdk.testing import FakeProvider, override_ai_provider, assert_prompt_sent
-from django_ai_sdk.testing.assertions import (
+from djangosdk.testing import FakeProvider, override_ai_provider, assert_prompt_sent
+from djangosdk.testing.assertions import (
     assert_tool_called,
     assert_model_used,
     assert_system_prompt_contains,
 )
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 
 class TestAgent(Agent):
@@ -63,7 +63,7 @@ def test_assert_system_prompt_contains_fails():
 
 
 def test_assert_tool_called_passes():
-    from django_ai_sdk.agents.request import AgentRequest
+    from djangosdk.agents.request import AgentRequest
 
     fake = FakeProvider(
         text="OK",
@@ -83,7 +83,7 @@ def test_assert_tool_called_passes():
 
 
 def test_assert_tool_called_fails_on_wrong_name():
-    from django_ai_sdk.agents.request import AgentRequest
+    from djangosdk.agents.request import AgentRequest
 
     fake = FakeProvider(
         text="OK",

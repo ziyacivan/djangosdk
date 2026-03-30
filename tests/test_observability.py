@@ -21,7 +21,7 @@ def _inject_fake_module(name: str, **attrs) -> MagicMock:
 
 class TestAbstractObserver:
     def test_all_hooks_are_callable(self):
-        from django_ai_sdk.observability.base import AbstractObserver
+        from djangosdk.observability.base import AbstractObserver
 
         class ConcreteObserver(AbstractObserver):
             def on_agent_start(self, agent, prompt, model, provider, **kwargs): pass
@@ -52,15 +52,15 @@ class TestLangSmithObserver:
         fake_langsmith.Client = self.mock_client_cls
         sys.modules["langsmith"] = fake_langsmith
         # Reload the module to pick up the new fake
-        if "django_ai_sdk.observability.langsmith" in sys.modules:
-            del sys.modules["django_ai_sdk.observability.langsmith"]
+        if "djangosdk.observability.langsmith" in sys.modules:
+            del sys.modules["djangosdk.observability.langsmith"]
 
     def teardown_method(self):
         sys.modules.pop("langsmith", None)
-        sys.modules.pop("django_ai_sdk.observability.langsmith", None)
+        sys.modules.pop("djangosdk.observability.langsmith", None)
 
     def _make_observer(self):
-        from django_ai_sdk.observability.langsmith import LangSmithObserver
+        from djangosdk.observability.langsmith import LangSmithObserver
         obs = LangSmithObserver(api_key="ls-test-key", project="test-project")
         return obs
 
@@ -127,14 +127,14 @@ class TestLangfuseObserver:
         fake_langfuse = types.ModuleType("langfuse")
         fake_langfuse.Langfuse = self.mock_lf_cls
         sys.modules["langfuse"] = fake_langfuse
-        sys.modules.pop("django_ai_sdk.observability.langfuse", None)
+        sys.modules.pop("djangosdk.observability.langfuse", None)
 
     def teardown_method(self):
         sys.modules.pop("langfuse", None)
-        sys.modules.pop("django_ai_sdk.observability.langfuse", None)
+        sys.modules.pop("djangosdk.observability.langfuse", None)
 
     def _make_observer(self):
-        from django_ai_sdk.observability.langfuse import LangfuseObserver
+        from djangosdk.observability.langfuse import LangfuseObserver
         return LangfuseObserver(
             public_key="pk-test",
             secret_key="sk-test",
@@ -203,15 +203,15 @@ class TestOpenTelemetryObserver:
 
         sys.modules["opentelemetry"] = mock_otel
         sys.modules["opentelemetry.trace"] = mock_trace_mod
-        sys.modules.pop("django_ai_sdk.observability.opentelemetry", None)
+        sys.modules.pop("djangosdk.observability.opentelemetry", None)
 
     def teardown_method(self):
         sys.modules.pop("opentelemetry", None)
         sys.modules.pop("opentelemetry.trace", None)
-        sys.modules.pop("django_ai_sdk.observability.opentelemetry", None)
+        sys.modules.pop("djangosdk.observability.opentelemetry", None)
 
     def _make_observer(self):
-        from django_ai_sdk.observability.opentelemetry import OpenTelemetryObserver
+        from djangosdk.observability.opentelemetry import OpenTelemetryObserver
         return OpenTelemetryObserver(service_name="test-service")
 
     def test_on_agent_start_creates_span(self):
@@ -271,15 +271,15 @@ class TestOpenTelemetryObserver:
 
 class TestSetupObservability:
     def setup_method(self):
-        import django_ai_sdk.observability as obs_module
+        import djangosdk.observability as obs_module
         obs_module._observer = None
 
     def teardown_method(self):
-        import django_ai_sdk.observability as obs_module
+        import djangosdk.observability as obs_module
         obs_module._observer = None
 
     def test_no_backend_does_nothing(self):
-        from django_ai_sdk.observability import setup_observability, get_observer
+        from djangosdk.observability import setup_observability, get_observer
 
         setup_observability({"OBSERVABILITY": {"BACKEND": None}})
         assert get_observer() is None
@@ -291,10 +291,10 @@ class TestSetupObservability:
         fake_ls = types.ModuleType("langsmith")
         fake_ls.Client = mock_client_cls
         sys.modules["langsmith"] = fake_ls
-        sys.modules.pop("django_ai_sdk.observability.langsmith", None)
+        sys.modules.pop("djangosdk.observability.langsmith", None)
 
         try:
-            from django_ai_sdk.observability import setup_observability, get_observer
+            from djangosdk.observability import setup_observability, get_observer
             setup_observability({
                 "OBSERVABILITY": {
                     "BACKEND": "langsmith",
@@ -302,16 +302,16 @@ class TestSetupObservability:
                     "LANGCHAIN_PROJECT": "my-project",
                 }
             })
-            from django_ai_sdk.observability.langsmith import LangSmithObserver
+            from djangosdk.observability.langsmith import LangSmithObserver
             assert isinstance(get_observer(), LangSmithObserver)
         finally:
             sys.modules.pop("langsmith", None)
-            sys.modules.pop("django_ai_sdk.observability.langsmith", None)
-            import django_ai_sdk.observability as obs_module
+            sys.modules.pop("djangosdk.observability.langsmith", None)
+            import djangosdk.observability as obs_module
             obs_module._observer = None
 
     def test_unknown_backend_does_nothing(self):
-        from django_ai_sdk.observability import setup_observability, get_observer
+        from djangosdk.observability import setup_observability, get_observer
 
         setup_observability({"OBSERVABILITY": {"BACKEND": "unknown_backend"}})
         assert get_observer() is None

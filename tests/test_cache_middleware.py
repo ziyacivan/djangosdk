@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from django_ai_sdk.providers.cache import PromptCacheMiddleware
-from django_ai_sdk.agents.request import AgentRequest
+from djangosdk.providers.cache import PromptCacheMiddleware
+from djangosdk.agents.request import AgentRequest
 
 
 def _req(model: str, messages: list, enable_cache: bool = True) -> AgentRequest:

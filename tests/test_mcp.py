@@ -12,27 +12,27 @@ from unittest.mock import MagicMock, patch
 
 class TestMCPTransportConfig:
     def test_http_from_dict(self):
-        from django_ai_sdk.mcp.transport import MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import MCPTransportConfig, TransportType
         cfg = MCPTransportConfig.from_dict({"url": "https://mcp.example.com", "transport": "http"})
         assert cfg.type == TransportType.HTTP
         assert cfg.url == "https://mcp.example.com"
 
     def test_stdio_from_dict(self):
-        from django_ai_sdk.mcp.transport import MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import MCPTransportConfig, TransportType
         cfg = MCPTransportConfig.from_dict({"command": "npx", "args": ["-y", "@mcp/server"]})
         assert cfg.type == TransportType.STDIO
         assert cfg.command == "npx"
         assert cfg.args == ["-y", "@mcp/server"]
 
     def test_default_transport_is_http(self):
-        from django_ai_sdk.mcp.transport import MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import MCPTransportConfig, TransportType
         cfg = MCPTransportConfig.from_dict({"url": "https://mcp.example.com"})
         assert cfg.type == TransportType.HTTP
 
 
 class TestHttpTransport:
     def _send(self, payload: dict) -> dict:
-        from django_ai_sdk.mcp.transport import HttpTransport, MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import HttpTransport, MCPTransportConfig, TransportType
         cfg = MCPTransportConfig(type=TransportType.HTTP, url="https://mcp.example.com")
         transport = HttpTransport(cfg)
 
@@ -51,7 +51,7 @@ class TestHttpTransport:
         assert result == {"jsonrpc": "2.0", "id": "1", "result": {"tools": []}}
 
     def test_send_raises_on_network_error(self):
-        from django_ai_sdk.mcp.transport import HttpTransport, MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import HttpTransport, MCPTransportConfig, TransportType
         cfg = MCPTransportConfig(type=TransportType.HTTP, url="https://mcp.example.com")
         transport = HttpTransport(cfg)
         with patch("urllib.request.urlopen", side_effect=OSError("connection refused")):
@@ -61,7 +61,7 @@ class TestHttpTransport:
 
 class TestStdioTransport:
     def test_send_writes_and_reads_process(self):
-        from django_ai_sdk.mcp.transport import StdioTransport, MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import StdioTransport, MCPTransportConfig, TransportType
 
         cfg = MCPTransportConfig(type=TransportType.STDIO, command="echo", args=[])
         transport = StdioTransport(cfg)
@@ -80,7 +80,7 @@ class TestStdioTransport:
         mock_proc.stdin.flush.assert_called_once()
 
     def test_stop_terminates_process(self):
-        from django_ai_sdk.mcp.transport import StdioTransport, MCPTransportConfig, TransportType
+        from djangosdk.mcp.transport import StdioTransport, MCPTransportConfig, TransportType
         cfg = MCPTransportConfig(type=TransportType.STDIO, command="echo")
         transport = StdioTransport(cfg)
 
@@ -99,8 +99,8 @@ class TestStdioTransport:
 class TestMCPClient:
     def _make_client_with_mock(self, responses: list[dict]):
         """Build an MCPClient whose transport is mocked to return `responses` in order."""
-        from django_ai_sdk.mcp.client import MCPClient
-        from django_ai_sdk.mcp.transport import MCPTransportConfig, TransportType
+        from djangosdk.mcp.client import MCPClient
+        from djangosdk.mcp.transport import MCPTransportConfig, TransportType
 
         cfg = MCPTransportConfig(type=TransportType.HTTP, url="https://mcp.test")
         client = MCPClient(cfg)
@@ -189,7 +189,7 @@ class TestMCPClient:
         assert schemas[0]["function"]["name"] == "lookup"
 
     def test_from_dict_http(self):
-        from django_ai_sdk.mcp.client import MCPClient
+        from djangosdk.mcp.client import MCPClient
         client = MCPClient.from_dict({"url": "https://mcp.example.com", "transport": "http"})
         assert client is not None
 
@@ -200,7 +200,7 @@ class TestMCPClient:
 
 class TestMCPServer:
     def _call(self, method: str, params: dict = None) -> dict:
-        from django_ai_sdk.mcp.server import MCPServer
+        from djangosdk.mcp.server import MCPServer
         server = MCPServer()
         return server.handle({
             "jsonrpc": "2.0",
@@ -215,7 +215,7 @@ class TestMCPServer:
         assert "tools" in result["result"]["capabilities"]
 
     def test_tools_list_returns_registered_tools(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool
+        from djangosdk.mcp.decorators import mcp_tool
 
         @mcp_tool
         def my_tool(query: str) -> str:
@@ -227,7 +227,7 @@ class TestMCPServer:
         assert "my_tool" in tool_names
 
     def test_tools_call_executes_function(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool
+        from djangosdk.mcp.decorators import mcp_tool
 
         @mcp_tool
         def greet(name: str) -> str:
@@ -241,7 +241,7 @@ class TestMCPServer:
         assert "error" in result
 
     def test_resources_list(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_resource
+        from djangosdk.mcp.decorators import mcp_resource
 
         @mcp_resource("file:///test.txt", name="Test File")
         def get_test():
@@ -252,7 +252,7 @@ class TestMCPServer:
         assert "file:///test.txt" in uris
 
     def test_resources_read(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_resource
+        from djangosdk.mcp.decorators import mcp_resource
 
         @mcp_resource("file:///data.json")
         def get_data():
@@ -274,7 +274,7 @@ class TestMCPServer:
 class TestMCPServerView:
     def _post(self, body: dict):
         from django.test import RequestFactory
-        from django_ai_sdk.mcp.server import MCPServerView
+        from djangosdk.mcp.server import MCPServerView
 
         factory = RequestFactory()
         request = factory.post(
@@ -293,7 +293,7 @@ class TestMCPServerView:
 
     def test_invalid_json_returns_400(self):
         from django.test import RequestFactory
-        from django_ai_sdk.mcp.server import MCPServerView
+        from djangosdk.mcp.server import MCPServerView
 
         factory = RequestFactory()
         request = factory.post("/mcp/", data=b"not-json", content_type="application/json")
@@ -308,7 +308,7 @@ class TestMCPServerView:
 
 class TestMCPDecorators:
     def test_mcp_tool_registers_function(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool, get_registered_tools
+        from djangosdk.mcp.decorators import mcp_tool, get_registered_tools
 
         @mcp_tool
         def my_func(query: str, limit: int = 10) -> list:
@@ -320,7 +320,7 @@ class TestMCPDecorators:
         assert tools["my_func"]["description"] == "Search for items."
 
     def test_mcp_tool_generates_schema(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool, get_registered_tools
+        from djangosdk.mcp.decorators import mcp_tool, get_registered_tools
 
         @mcp_tool
         def typed_tool(name: str, count: int) -> str:
@@ -334,7 +334,7 @@ class TestMCPDecorators:
         assert "count" in schema["required"]
 
     def test_mcp_tool_with_custom_name(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool, get_registered_tools
+        from djangosdk.mcp.decorators import mcp_tool, get_registered_tools
 
         @mcp_tool(name="custom_name", description="A custom tool")
         def my_fn(x: str) -> str:
@@ -345,7 +345,7 @@ class TestMCPDecorators:
         assert tools["custom_name"]["description"] == "A custom tool"
 
     def test_mcp_tool_callable_after_decoration(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_tool
+        from djangosdk.mcp.decorators import mcp_tool
 
         @mcp_tool
         def add(a: int, b: int) -> int:
@@ -355,7 +355,7 @@ class TestMCPDecorators:
         assert add(2, 3) == 5
 
     def test_mcp_resource_registers(self, reset_mcp_registry):
-        from django_ai_sdk.mcp.decorators import mcp_resource, get_registered_resources
+        from djangosdk.mcp.decorators import mcp_resource, get_registered_resources
 
         @mcp_resource("file:///catalog.json", name="Catalog", mime_type="application/json")
         def get_catalog() -> dict:

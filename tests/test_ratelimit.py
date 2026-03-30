@@ -10,7 +10,7 @@ from unittest.mock import patch, MagicMock
 
 class TestDjangoCacheRateLimitBackend:
     def _make_backend(self, per_minute: int = 1000, per_day: int = 10000):
-        from django_ai_sdk.ratelimit.backends import DjangoCacheRateLimitBackend
+        from djangosdk.ratelimit.backends import DjangoCacheRateLimitBackend
         backend = DjangoCacheRateLimitBackend()
         backend._per_minute = per_minute
         backend._per_day = per_day
@@ -117,10 +117,10 @@ class TestAiRateLimitDecorator:
             "PROVIDERS": {},
             "RATE_LIMITING": {"ENABLED": False},
         }
-        from django_ai_sdk.conf import ai_settings
+        from djangosdk.conf import ai_settings
         ai_settings.reload()
 
-        from django_ai_sdk.ratelimit.decorators import ai_rate_limit
+        from djangosdk.ratelimit.decorators import ai_rate_limit
 
         @ai_rate_limit(estimated_tokens=100)
         def view(request):
@@ -149,11 +149,11 @@ class TestAiRateLimitDecorator:
                 "PER_USER_TOKENS_PER_DAY": 10000,
             },
         }
-        from django_ai_sdk.conf import ai_settings
+        from djangosdk.conf import ai_settings
         ai_settings.reload()
 
-        from django_ai_sdk.ratelimit.decorators import ai_rate_limit
-        from django_ai_sdk.ratelimit.backends import DjangoCacheRateLimitBackend
+        from djangosdk.ratelimit.decorators import ai_rate_limit
+        from djangosdk.ratelimit.backends import DjangoCacheRateLimitBackend
 
         @ai_rate_limit(estimated_tokens=500)  # exceeds 100/minute limit
         def view(request):
@@ -165,7 +165,7 @@ class TestAiRateLimitDecorator:
         mock_backend.check.return_value = (False, "Rate limit exceeded: 500 > 100")
 
         with patch(
-            "django_ai_sdk.ratelimit.backends.DjangoCacheRateLimitBackend",
+            "djangosdk.ratelimit.backends.DjangoCacheRateLimitBackend",
             return_value=mock_backend,
         ):
             response = view(request)
@@ -187,11 +187,11 @@ class TestAiRateLimitDecorator:
             "PROVIDERS": {},
             "RATE_LIMITING": {"ENABLED": True},
         }
-        from django_ai_sdk.conf import ai_settings
+        from djangosdk.conf import ai_settings
         ai_settings.reload()
 
-        from django_ai_sdk.ratelimit.decorators import ai_rate_limit
-        from django_ai_sdk.ratelimit.backends import DjangoCacheRateLimitBackend
+        from djangosdk.ratelimit.decorators import ai_rate_limit
+        from djangosdk.ratelimit.backends import DjangoCacheRateLimitBackend
 
         @ai_rate_limit(estimated_tokens=10)
         def view(request):
@@ -203,7 +203,7 @@ class TestAiRateLimitDecorator:
         mock_backend.check.return_value = (True, "")
 
         with patch(
-            "django_ai_sdk.ratelimit.backends.DjangoCacheRateLimitBackend",
+            "djangosdk.ratelimit.backends.DjangoCacheRateLimitBackend",
             return_value=mock_backend,
         ):
             view(request)
@@ -226,11 +226,11 @@ class TestAiRateLimitDecorator:
             "PROVIDERS": {},
             "RATE_LIMITING": {"ENABLED": True},
         }
-        from django_ai_sdk.conf import ai_settings
+        from djangosdk.conf import ai_settings
         ai_settings.reload()
 
-        from django_ai_sdk.ratelimit.decorators import ai_rate_limit
-        from django_ai_sdk.ratelimit.backends import DjangoCacheRateLimitBackend
+        from djangosdk.ratelimit.decorators import ai_rate_limit
+        from djangosdk.ratelimit.backends import DjangoCacheRateLimitBackend
 
         def get_org_id(request):
             return "org_99"
@@ -244,7 +244,7 @@ class TestAiRateLimitDecorator:
         mock_backend.check.return_value = (True, "")
 
         with patch(
-            "django_ai_sdk.ratelimit.backends.DjangoCacheRateLimitBackend",
+            "djangosdk.ratelimit.backends.DjangoCacheRateLimitBackend",
             return_value=mock_backend,
         ):
             view(request)

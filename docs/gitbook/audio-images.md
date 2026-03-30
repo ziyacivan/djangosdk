@@ -7,7 +7,7 @@
 ### Transcription (Speech-to-Text)
 
 ```python
-from django_ai_sdk.audio.transcribe import transcribe, atranscribe
+from djangosdk.audio.transcribe import transcribe, atranscribe
 
 # Synchronous
 transcript = transcribe("/path/to/audio.mp3", model="whisper-1")
@@ -22,7 +22,7 @@ transcript = await atranscribe("/path/to/audio.mp3")
 ### Synthesis (Text-to-Speech)
 
 ```python
-from django_ai_sdk.audio.synthesize import synthesize, asynthesize
+from djangosdk.audio.synthesize import synthesize, asynthesize
 
 audio_bytes = synthesize(
     "Hello, how can I help you today?",
@@ -40,7 +40,7 @@ with open("output.mp3", "wb") as f:
 
 ```python
 from django.http import HttpResponse
-from django_ai_sdk.audio.synthesize import synthesize
+from djangosdk.audio.synthesize import synthesize
 
 def speak_view(request):
     text = request.GET.get("text", "Hello!")
@@ -53,7 +53,7 @@ def speak_view(request):
 ### Image Generation
 
 ```python
-from django_ai_sdk.images.generate import generate_image, agenerate_image
+from djangosdk.images.generate import generate_image, agenerate_image
 
 result = generate_image(
     prompt="A Django logo made of geometric shapes, minimalist style",
@@ -75,7 +75,7 @@ print(result.b64)      # Base64-encoded image data (if requested)
 
 ```python
 from django.http import JsonResponse
-from django_ai_sdk.images.generate import generate_image
+from djangosdk.images.generate import generate_image
 
 def generate_view(request):
     prompt = request.POST.get("prompt", "")

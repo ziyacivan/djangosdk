@@ -1,4 +1,4 @@
-from django_ai_sdk.conf import AiSettings
+from djangosdk.conf import AiSettings
 
 
 def test_defaults():

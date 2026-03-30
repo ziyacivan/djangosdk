@@ -30,7 +30,7 @@ You are implementing a module of the `django-ai-sdk` project. The full specifica
 Before writing any code:
 1. Read `docs/PRD.md` — especially the MVP Features and Package Structure sections
 2. Read `CLAUDE.md` for design principles and constraints
-3. Identify the exact module path inside `django_ai_sdk/` and its role in the architecture
+3. Identify the exact module path inside `djangosdk/` and its role in the architecture
 
 ## Step 2 — Understand the Module's Contract
 

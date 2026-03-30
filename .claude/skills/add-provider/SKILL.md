@@ -237,9 +237,9 @@ python manage.py ai_sdk_check
 To wrap a provider not natively supported by litellm, implement `AbstractProvider`:
 
 ```python
-from django_ai_sdk.providers.base import AbstractProvider
-from django_ai_sdk.agents.request import AgentRequest
-from django_ai_sdk.agents.response import AgentResponse
+from djangosdk.providers.base import AbstractProvider
+from djangosdk.agents.request import AgentRequest
+from djangosdk.agents.response import AgentResponse
 
 
 class MyCustomProvider(AbstractProvider):

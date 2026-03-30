@@ -34,7 +34,7 @@ AI_SDK = {
 ## Usage
 
 ```python
-from django_ai_sdk.memory.semantic import SemanticMemory
+from djangosdk.memory.semantic import SemanticMemory
 
 # Index documents
 memory = SemanticMemory(namespace="docs")
@@ -51,8 +51,8 @@ for result in results:
 ## Integration with Agents
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.memory.semantic import SemanticMemory
+from djangosdk.agents.base import Agent
+from djangosdk.memory.semantic import SemanticMemory
 
 class DocumentAgent(Agent):
     provider = "openai"

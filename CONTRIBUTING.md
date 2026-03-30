@@ -37,7 +37,7 @@ coverage run -m pytest && coverage report --fail-under=80
 
 - Python 3.11+ type hints on all public functions
 - Docstrings for public classes and methods (Google style)
-- Run `ruff check django_ai_sdk/` before submitting a PR
+- Run `ruff check djangosdk/` before submitting a PR
 
 ## Pull Request Guidelines
 
@@ -56,7 +56,7 @@ Providers are configured via `AI_SDK.PROVIDERS` settings and routed through `Lit
 Use the `@tool` decorator:
 
 ```python
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 @tool
 def lookup_order(order_id: str) -> dict:

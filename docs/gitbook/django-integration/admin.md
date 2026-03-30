@@ -26,7 +26,7 @@ Ensure `django.contrib.admin` is in `INSTALLED_APPS` (it is by default in new Dj
 python manage.py migrate
 ```
 
-Visit `/admin/django_ai_sdk/conversation/` to see conversations.
+Visit `/admin/djangosdk/conversation/` to see conversations.
 
 ## Customizing Admin
 
@@ -35,7 +35,7 @@ You can extend the admin classes for your needs:
 ```python
 # myapp/admin.py
 from django.contrib import admin
-from django_ai_sdk.models.conversation import Conversation
+from djangosdk.models.conversation import Conversation
 
 # Unregister and re-register with custom config
 admin.site.unregister(Conversation)

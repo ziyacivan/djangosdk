@@ -26,8 +26,8 @@ Django is the standard framework for Python web development, yet as of 2026 ther
 
 ```python
 # myapp/agents.py
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.agents.base import Agent
+from djangosdk.tools.decorator import tool
 
 @tool
 def get_weather(city: str) -> str:

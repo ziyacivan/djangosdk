@@ -20,7 +20,7 @@ AI_SDK = {
 Apply rate limiting to a view or function:
 
 ```python
-from django_ai_sdk.ratelimit.decorators import ai_rate_limit
+from djangosdk.ratelimit.decorators import ai_rate_limit
 
 @ai_rate_limit(tokens_per_minute=10000, tokens_per_day=100000)
 def chat_view(request):
@@ -50,7 +50,7 @@ CACHES = {
 Implement `AbstractRateLimitBackend` to use a custom store:
 
 ```python
-from django_ai_sdk.ratelimit.backends import AbstractRateLimitBackend
+from djangosdk.ratelimit.backends import AbstractRateLimitBackend
 
 class MyRateLimitBackend(AbstractRateLimitBackend):
     def check_and_consume(self, user_id: str, tokens: int) -> bool:

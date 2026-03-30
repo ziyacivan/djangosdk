@@ -52,7 +52,7 @@ Never subclass the mixins directly — subclass `Agent` only.
 Define tools with the `@tool` decorator, then assign to the class:
 
 ```python
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 @tool
 def get_weather(city: str, unit: Literal["celsius", "fahrenheit"] = "celsius") -> str:
@@ -74,7 +74,7 @@ For agents that must return a validated Pydantic model:
 
 ```python
 from pydantic import BaseModel
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class SentimentResult(BaseModel):
     sentiment: Literal["positive", "negative", "neutral"]
@@ -96,8 +96,8 @@ print(response.structured)  # SentimentResult instance
 For agents backed by a reasoning model (o3, Claude 3.7, DeepSeek R1):
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 # OpenAI o3 / o4-mini
 class DeepAnalysisAgent(Agent):
@@ -142,9 +142,9 @@ from __future__ import annotations
 
 from typing import Literal
 
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
+from djangosdk.tools.decorator import tool
 
 # Define tools here or import them
 # @tool
@@ -180,8 +180,8 @@ class [Name]Agent(Agent):
 Always write tests alongside the agent. Use the `write-tests` skill or follow this pattern:
 
 ```python
-from django_ai_sdk.testing.fakes import FakeProvider
-from django_ai_sdk.testing.assertions import assert_prompt_sent
+from djangosdk.testing.fakes import FakeProvider
+from djangosdk.testing.assertions import assert_prompt_sent
 
 def test_[name]_agent_returns_text(fake_provider):
     fake_provider.set_response("[expected output]")

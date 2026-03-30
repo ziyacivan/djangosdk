@@ -9,7 +9,7 @@ While `Conversational` manages the raw message history for a single conversation
 ## Usage
 
 ```python
-from django_ai_sdk.memory.episodic import EpisodicMemory
+from djangosdk.memory.episodic import EpisodicMemory
 
 # Store a memory
 memory = EpisodicMemory(agent_id="support-agent", user_id=str(request.user.id))

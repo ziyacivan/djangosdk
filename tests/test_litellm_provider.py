@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 import pytest
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.agents.request import AgentRequest
-from django_ai_sdk.providers.litellm_provider import LiteLLMProvider
-from django_ai_sdk.providers.schemas import ProviderConfig
-from django_ai_sdk.testing.mock_litellm import (
+from djangosdk.agents.base import Agent
+from djangosdk.agents.request import AgentRequest
+from djangosdk.providers.litellm_provider import LiteLLMProvider
+from djangosdk.providers.schemas import ProviderConfig
+from djangosdk.testing.mock_litellm import (
     MockLiteLLMCompletion,
 )
 
@@ -82,7 +82,7 @@ def test_complete_with_cache_tokens():
 
 def test_complete_raises_provider_error_on_litellm_exception():
     from unittest.mock import patch
-    from django_ai_sdk.exceptions import ProviderError
+    from djangosdk.exceptions import ProviderError
 
     provider = LiteLLMProvider()
     req = _req()
@@ -132,7 +132,7 @@ def test_stream_yields_thinking_chunks():
     provider = LiteLLMProvider()
     req = _req(model="claude-3-7-sonnet-20250219")
 
-    from django_ai_sdk.testing.mock_litellm import make_stream_chunks
+    from djangosdk.testing.mock_litellm import make_stream_chunks
     chunks = make_stream_chunks(["Answer"], thinking_prefix="My thought")
 
     from unittest.mock import MagicMock, patch
@@ -189,10 +189,10 @@ def test_agent_uses_litellm_via_registry(settings):
         "PROVIDERS": {"openai": {"api_key": "sk-test"}},
         "CONVERSATION": {"PERSIST": False},
     }
-    from django_ai_sdk.conf import ai_settings
+    from djangosdk.conf import ai_settings
     ai_settings.reload()
-    from django_ai_sdk.apps import AiSdkConfig
-    AiSdkConfig("django_ai_sdk", __import__("django_ai_sdk")).ready()
+    from djangosdk.apps import AiSdkConfig
+    AiSdkConfig("djangosdk", __import__("djangosdk")).ready()
 
     with MockLiteLLMCompletion(text="I'm a real LLM response"):
         agent = LiteLLMAgent()

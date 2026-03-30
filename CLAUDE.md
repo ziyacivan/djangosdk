@@ -36,7 +36,7 @@ Observability: OpenTelemetry | LangSmith | Langfuse
 4. **Reasoning-aware** — o3/o4-mini use `reasoning_effort`, Claude 3.7 uses `extended_thinking` + `thinking_budget`, DeepSeek R1 uses `budget_tokens` — `LiteLLMProvider` injects these automatically from `ReasoningConfig`
 5. **Async-first** — every sync method (`handle`, `stream`) has an async counterpart (`ahandle`, `astream`); Django ORM calls inside async views use `sync_to_async`
 
-### Package Layout (`django_ai_sdk/`)
+### Package Layout (`djangosdk/`)
 
 | Module | Purpose | Status |
 |---|---|---|
@@ -115,7 +115,7 @@ AI_SDK = {
 ## Testing
 
 - Use `FakeProvider` for unit tests — never call real APIs in tests
-- Use `assert_prompt_sent()` and `assert_tool_called()` from `django_ai_sdk.testing.assertions`
+- Use `assert_prompt_sent()` and `assert_tool_called()` from `djangosdk.testing.assertions`
 - Target: 90% test coverage
 - Run tests: `pytest`
 - 27 test files cover all major modules

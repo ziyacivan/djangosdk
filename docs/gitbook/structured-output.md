@@ -8,7 +8,7 @@ Set `output_schema` to a Pydantic `BaseModel` class on your agent:
 
 ```python
 from pydantic import BaseModel, Field
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class ExtractedData(BaseModel):
     title: str

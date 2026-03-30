@@ -41,7 +41,7 @@ When the agent handles a request, it automatically:
 Use `@mcp_tool` and `@mcp_resource` decorators to expose Django functionality via MCP:
 
 ```python
-from django_ai_sdk.mcp.decorators import mcp_tool, mcp_resource
+from djangosdk.mcp.decorators import mcp_tool, mcp_resource
 
 @mcp_tool
 def query_database(sql: str) -> list:
@@ -66,7 +66,7 @@ Mount the MCP server in your URL configuration:
 
 ```python
 from django.urls import path
-from django_ai_sdk.mcp.server import mcp_server_view
+from djangosdk.mcp.server import mcp_server_view
 
 urlpatterns = [
     path("mcp/", mcp_server_view),

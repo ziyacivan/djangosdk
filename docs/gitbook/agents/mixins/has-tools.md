@@ -5,8 +5,8 @@
 ## Declaring Tools
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.agents.base import Agent
+from djangosdk.tools.decorator import tool
 
 @tool
 def lookup_order(order_id: str) -> str:

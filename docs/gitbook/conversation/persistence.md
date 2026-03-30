@@ -37,8 +37,8 @@
 ## Querying Conversations
 
 ```python
-from django_ai_sdk.models.conversation import Conversation
-from django_ai_sdk.models.message import Message
+from djangosdk.models.conversation import Conversation
+from djangosdk.models.message import Message
 
 # All conversations for a user
 convs = Conversation.objects.filter(metadata__user_id=user.id)

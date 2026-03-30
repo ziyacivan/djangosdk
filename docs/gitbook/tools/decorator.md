@@ -5,7 +5,7 @@ The `@tool` decorator marks a Python function as an AI tool. It automatically ge
 ## Basic Usage
 
 ```python
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 @tool
 def get_weather(city: str, unit: str = "celsius") -> str:
@@ -61,7 +61,7 @@ def search(query: str, max_results: int = 10) -> list:
 ## Using a Tool in an Agent
 
 ```python
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class SearchAgent(Agent):
     tools = [search]

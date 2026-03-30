@@ -7,8 +7,8 @@ The `Agent` class is the primary abstraction in `django-ai-sdk`. An agent encaps
 Subclass `Agent` and declare class attributes:
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 class MyAgent(Agent):
     provider = "openai"             # From AI_SDK.PROVIDERS
@@ -81,8 +81,8 @@ response.conversation_id  # str | None: Conversation UUID
 All five are composed by default. You can create leaner agents by composing only the mixins you need:
 
 ```python
-from django_ai_sdk.agents.mixins.promptable import Promptable
-from django_ai_sdk.agents.mixins.has_tools import HasTools
+from djangosdk.agents.mixins.promptable import Promptable
+from djangosdk.agents.mixins.has_tools import HasTools
 
 class LeanAgent(Promptable, HasTools):
     provider = "openai"

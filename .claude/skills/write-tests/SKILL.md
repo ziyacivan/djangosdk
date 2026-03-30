@@ -30,7 +30,7 @@ You are writing pytest tests for `django-ai-sdk` code. The golden rule: **never 
 ### `FakeProvider`
 
 ```python
-from django_ai_sdk.testing.fakes import FakeProvider
+from djangosdk.testing.fakes import FakeProvider
 
 provider = FakeProvider()
 provider.set_response("Hello, world!")
@@ -45,7 +45,7 @@ provider.set_response("Hello, world!")
 ### `assert_prompt_sent`
 
 ```python
-from django_ai_sdk.testing.assertions import assert_prompt_sent
+from djangosdk.testing.assertions import assert_prompt_sent
 
 assert_prompt_sent(provider, "analyze Q3 sales")
 # Raises AssertionError if no recorded request contains that substring
@@ -54,7 +54,7 @@ assert_prompt_sent(provider, "analyze Q3 sales")
 ### `assert_tool_called`
 
 ```python
-from django_ai_sdk.testing.assertions import assert_tool_called
+from djangosdk.testing.assertions import assert_tool_called
 
 assert_tool_called(provider, "get_weather")
 # Raises AssertionError if no recorded request included a tool named "get_weather"
@@ -66,8 +66,8 @@ assert_tool_called(provider, "get_weather")
 
 ```python
 import pytest
-from django_ai_sdk.testing.fakes import FakeProvider
-from django_ai_sdk.testing.assertions import assert_prompt_sent
+from djangosdk.testing.fakes import FakeProvider
+from djangosdk.testing.assertions import assert_prompt_sent
 from myapp.agents import SummaryAgent
 
 
@@ -100,8 +100,8 @@ def test_summary_agent_uses_system_prompt(fake_provider):
 ### Pattern 2 — Test Tool Dispatch Loop
 
 ```python
-from django_ai_sdk.testing.fakes import FakeProvider
-from django_ai_sdk.testing.assertions import assert_tool_called
+from djangosdk.testing.fakes import FakeProvider
+from djangosdk.testing.assertions import assert_tool_called
 from myapp.agents import WeatherAgent
 
 
@@ -128,7 +128,7 @@ def test_weather_agent_calls_get_weather_tool(fake_provider):
 
 ```python
 import json
-from django_ai_sdk.testing.fakes import FakeProvider
+from djangosdk.testing.fakes import FakeProvider
 from myapp.agents import SentimentAgent
 
 
@@ -182,8 +182,8 @@ def test_streaming_yields_chunks(fake_provider):
 
 ```python
 from django.test import TestCase
-from django_ai_sdk.signals import agent_completed
-from django_ai_sdk.testing.fakes import FakeProvider
+from djangosdk.signals import agent_completed
+from djangosdk.testing.fakes import FakeProvider
 from myapp.agents import SummaryAgent
 
 
@@ -228,7 +228,7 @@ def pytest_configure():
             INSTALLED_APPS=[
                 "django.contrib.contenttypes",
                 "django.contrib.auth",
-                "django_ai_sdk",
+                "djangosdk",
             ],
             AI_SDK={
                 "DEFAULT_PROVIDER": "fake",
@@ -244,7 +244,7 @@ def pytest_configure():
 ### Testing `@tool` schema generation
 
 ```python
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 
 @tool
@@ -267,8 +267,8 @@ def test_tool_schema_is_attached():
 ### Testing `FakeProvider` itself
 
 ```python
-from django_ai_sdk.testing.fakes import FakeProvider
-from django_ai_sdk.agents.request import AgentRequest
+from djangosdk.testing.fakes import FakeProvider
+from djangosdk.agents.request import AgentRequest
 
 
 def test_fake_provider_records_requests():
@@ -287,7 +287,7 @@ def test_fake_provider_records_requests():
 The project targets **90% test coverage**. Run with:
 
 ```bash
-pytest --cov=django_ai_sdk --cov-report=term-missing
+pytest --cov=djangosdk --cov-report=term-missing
 ```
 
 Priority modules to cover first:

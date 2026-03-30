@@ -5,7 +5,7 @@
 ## Basic Usage
 
 ```python
-from django_ai_sdk.embeddings.embed import embed, aembed
+from djangosdk.embeddings.embed import embed, aembed
 
 # Synchronous
 vector = embed("Hello, world!")
@@ -18,7 +18,7 @@ vector = await aembed("Hello, world!")
 ## Batch Embeddings
 
 ```python
-from django_ai_sdk.embeddings.embed import embed_many
+from djangosdk.embeddings.embed import embed_many
 
 vectors = embed_many([
     "Django is a Python web framework.",

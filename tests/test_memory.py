@@ -12,7 +12,7 @@ from unittest.mock import patch, MagicMock
 @pytest.mark.django_db
 class TestEpisodicMemory:
     def _make_memory(self, namespace: str = "test_ns", max_episodes: int = 10):
-        from django_ai_sdk.memory.episodic import EpisodicMemory
+        from djangosdk.memory.episodic import EpisodicMemory
         return EpisodicMemory(max_episodes=max_episodes, namespace=namespace)
 
     def test_add_and_get_value(self):
@@ -118,7 +118,7 @@ class TestSemanticMemory:
     """
 
     def _make_memory(self, namespace: str = "test_semantic"):
-        from django_ai_sdk.memory.semantic import SemanticMemory
+        from djangosdk.memory.semantic import SemanticMemory
         return SemanticMemory(namespace=namespace)
 
     def _mock_entry(self, key="k1", value="v1", similarity=0.9):
@@ -131,7 +131,7 @@ class TestSemanticMemory:
     def test_add_stores_entry(self):
         mem = self._make_memory()
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
         mock_model = MagicMock()
         mock_model.objects.filter.return_value.first.return_value = None
 
@@ -152,7 +152,7 @@ class TestSemanticMemory:
         mock_model = MagicMock()
         mock_model.objects.filter.return_value.first.return_value = existing
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
         with MockLiteLLMEmbedding(vectors=[[0.5, 0.6]]), \
              patch.object(mem, "_get_model", return_value=mock_model):
             mem.add("django", "Updated description")
@@ -180,7 +180,7 @@ class TestSemanticMemory:
         mock_model.objects.filter.return_value.first.return_value = None  # no exact match
         mock_model.objects.filter.return_value.order_by.return_value.__getitem__.return_value = []
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
         with MockLiteLLMEmbedding(vectors=[[0.1]]), \
              patch.object(mem, "_get_model", return_value=mock_model):
             result = mem.get("unknown key")
@@ -202,10 +202,10 @@ class TestSemanticMemory:
             .order_by.return_value
             .__iter__) = MagicMock(return_value=iter([entry]))
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
         with MockLiteLLMEmbedding(vectors=[[0.1]]), \
              patch.object(mem, "_get_model", return_value=mock_model), \
-             patch("django_ai_sdk.memory.semantic.SemanticMemory.search") as search_mock:
+             patch("djangosdk.memory.semantic.SemanticMemory.search") as search_mock:
             search_mock.return_value = [{"key": "django", "value": "A framework", "similarity": None}]
             results = mem.search("web framework")
 
@@ -269,7 +269,7 @@ class TestSemanticMemory:
         mock_model = MagicMock()
         mock_model.objects.filter.return_value.first.return_value = None
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
         with MockLiteLLMEmbedding(vectors=[[0.1, 0.2]]), \
              patch.object(mem, "_get_model", return_value=mock_model):
             await mem.aadd("async_key", "async_value")
@@ -280,7 +280,7 @@ class TestSemanticMemory:
     async def test_asearch_returns_results(self):
         mem = self._make_memory()
 
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
 
         mock_entry = MagicMock()
         mock_entry.key = "k1"

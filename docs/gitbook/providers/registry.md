@@ -5,7 +5,7 @@
 ## Accessing the Registry
 
 ```python
-from django_ai_sdk.providers.registry import registry
+from djangosdk.providers.registry import registry
 
 provider = registry.get("openai")      # Returns the LiteLLMProvider for openai
 default_model = registry.get_default_model("anthropic", fallback="gpt-4.1")
@@ -25,7 +25,7 @@ class MyAppConfig(AppConfig):
     name = "myapp"
 
     def ready(self):
-        from django_ai_sdk.providers.registry import registry
+        from djangosdk.providers.registry import registry
         from myapp.providers import MyCustomProvider
         registry.register("my_provider", MyCustomProvider())
 ```

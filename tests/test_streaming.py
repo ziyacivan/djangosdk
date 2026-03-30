@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 
-from django_ai_sdk.agents.response import StreamChunk, UsageInfo
-from django_ai_sdk.streaming.sse import format_sse_chunk, iter_sse, SyncSSEResponse
+from djangosdk.agents.response import StreamChunk, UsageInfo
+from djangosdk.streaming.sse import format_sse_chunk, iter_sse, SyncSSEResponse
 
 
 def test_format_sse_text_delta():

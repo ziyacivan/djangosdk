@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel
-from django_ai_sdk.structured.output import StructuredOutput
-from django_ai_sdk.exceptions import SchemaError
+from djangosdk.structured.output import StructuredOutput
+from djangosdk.exceptions import SchemaError
 
 
 class OrderStatus(BaseModel):

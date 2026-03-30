@@ -5,8 +5,8 @@
 ## Usage
 
 ```python
-from django_ai_sdk.streaming.async_sse import AsyncSSEResponse
-from django_ai_sdk.agents.base import Agent
+from djangosdk.streaming.async_sse import AsyncSSEResponse
+from djangosdk.agents.base import Agent
 
 class AssistantAgent(Agent):
     provider = "anthropic"

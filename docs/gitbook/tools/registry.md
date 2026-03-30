@@ -11,7 +11,7 @@
 You rarely need to interact with `ToolRegistry` directly — it is managed automatically. However, you can use it for testing or advanced scenarios:
 
 ```python
-from django_ai_sdk.tools.registry import ToolRegistry
+from djangosdk.tools.registry import ToolRegistry
 from myapp.tools import lookup_order, cancel_order
 
 registry = ToolRegistry()
@@ -33,7 +33,7 @@ result = await registry.aexecute("lookup_order", {"order_id": "ABC123"})
 In addition to `@tool`-decorated functions, you can register `BaseTool` subclasses:
 
 ```python
-from django_ai_sdk.tools.base import BaseTool
+from djangosdk.tools.base import BaseTool
 
 class WeatherTool(BaseTool):
     name = "get_weather"

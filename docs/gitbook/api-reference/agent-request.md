@@ -1,6 +1,6 @@
 # AgentRequest
 
-**Module:** `django_ai_sdk.agents.request`
+**Module:** `djangosdk.agents.request`
 
 `AgentRequest` is a dataclass that encapsulates all data sent to a provider for a single completion. It is built internally by `Promptable._build_request()` and passed to the provider.
 

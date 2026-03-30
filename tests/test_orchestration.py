@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import pytest
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.orchestration.patterns import handoff, pipeline, parallel
-from django_ai_sdk.testing import FakeProvider
+from djangosdk.agents.base import Agent
+from djangosdk.orchestration.patterns import handoff, pipeline, parallel
+from djangosdk.testing import FakeProvider
 
 
 class AgentA(Agent):

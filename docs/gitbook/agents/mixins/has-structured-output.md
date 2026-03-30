@@ -6,7 +6,7 @@
 
 ```python
 from pydantic import BaseModel
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class ReviewAnalysis(BaseModel):
     sentiment: str        # "positive" | "negative" | "neutral"

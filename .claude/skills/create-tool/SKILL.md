@@ -25,7 +25,7 @@ You are creating a tool function for use with a `django-ai-sdk` Agent.
 
 ## How `@tool` Works Internally
 
-The `@tool` decorator (from `django_ai_sdk.tools.decorator`) does three things:
+The `@tool` decorator (from `djangosdk.tools.decorator`) does three things:
 1. Reads `fn.__doc__` → becomes the tool's `description` field in the JSON schema
 2. Reads `inspect.signature(fn)` + type annotations → builds `parameters` JSON schema
 3. Sets `fn._is_tool = True` and `fn._tool_schema = {...}` on the function object
@@ -58,7 +58,7 @@ The schema conforms to the OpenAI/Anthropic tool format and litellm passes it th
 
 ```python
 from typing import Literal
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 
 @tool
@@ -83,7 +83,7 @@ Synchronous tools can call the ORM directly (the dispatch loop is synchronous):
 
 ```python
 import json
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 
 
 @tool
@@ -105,7 +105,7 @@ For async contexts, define an async tool — the async dispatch loop in `Agent.a
 
 ```python
 import json
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.tools.decorator import tool
 from asgiref.sync import sync_to_async
 
 
@@ -126,7 +126,7 @@ async def get_user_orders_async(user_id: int) -> str:
 ## Attaching Tools to an Agent
 
 ```python
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class OrderAgent(Agent):
     model = "gpt-4.1"
@@ -156,7 +156,7 @@ def search_web(query: str, num_results: int = 5) -> str:
 
 ```python
 from decimal import Decimal, InvalidOperation
-from django_ai_sdk.tools.exceptions import ToolError
+from djangosdk.tools.exceptions import ToolError
 
 
 @tool

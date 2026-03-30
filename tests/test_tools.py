@@ -1,7 +1,7 @@
 import pytest
-from django_ai_sdk.tools.decorator import tool
-from django_ai_sdk.tools.registry import ToolRegistry
-from django_ai_sdk.exceptions import ToolError
+from djangosdk.tools.decorator import tool
+from djangosdk.tools.registry import ToolRegistry
+from djangosdk.exceptions import ToolError
 
 
 @tool

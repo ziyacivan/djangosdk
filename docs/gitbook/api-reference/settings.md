@@ -109,7 +109,7 @@ AI_SDK = {
 Use `ai_settings` to read values programmatically:
 
 ```python
-from django_ai_sdk.conf import ai_settings
+from djangosdk.conf import ai_settings
 
 print(ai_settings.DEFAULT_PROVIDER)   # "openai"
 print(ai_settings.DEFAULT_MODEL)      # "gpt-4o-mini"
@@ -124,7 +124,7 @@ value = ai_settings.get("RATE_LIMITING", {}).get("ENABLED", False)
 In tests, settings may change between test cases. Force a reload with:
 
 ```python
-from django_ai_sdk.conf import ai_settings
+from djangosdk.conf import ai_settings
 
 ai_settings.reload()
 ```

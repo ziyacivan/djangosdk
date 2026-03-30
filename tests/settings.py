@@ -5,7 +5,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "rest_framework",
-    "django_ai_sdk",
+    "djangosdk",
 ]
 DATABASES = {
     "default": {

@@ -7,8 +7,8 @@
 `agent.stream()` uses `SyncSSEResponse` internally. You can also use it directly:
 
 ```python
-from django_ai_sdk.streaming.sse import SyncSSEResponse, format_sse_chunk
-from django_ai_sdk.agents.response import StreamChunk
+from djangosdk.streaming.sse import SyncSSEResponse, format_sse_chunk
+from djangosdk.agents.response import StreamChunk
 
 def my_stream_view(request):
     def generate():
@@ -24,8 +24,8 @@ def my_stream_view(request):
 Formats a `StreamChunk` into an SSE-compliant string:
 
 ```python
-from django_ai_sdk.streaming.sse import format_sse_chunk
-from django_ai_sdk.agents.response import StreamChunk
+from djangosdk.streaming.sse import format_sse_chunk
+from djangosdk.agents.response import StreamChunk
 
 chunk = StreamChunk(type="text_delta", text="Hello!")
 print(format_sse_chunk(chunk))

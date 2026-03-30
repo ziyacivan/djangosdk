@@ -26,9 +26,9 @@ All providers below are configured in `AI_SDK.PROVIDERS` and accessed by name:
 Custom providers must implement `AbstractProvider`:
 
 ```python
-from django_ai_sdk.providers.base import AbstractProvider
-from django_ai_sdk.agents.request import AgentRequest
-from django_ai_sdk.agents.response import AgentResponse, StreamChunk
+from djangosdk.providers.base import AbstractProvider
+from djangosdk.agents.request import AgentRequest
+from djangosdk.agents.response import AgentResponse, StreamChunk
 from typing import Iterator, AsyncIterator
 
 class MyCustomProvider(AbstractProvider):
@@ -48,6 +48,6 @@ class MyCustomProvider(AbstractProvider):
 Register your custom provider in the `ProviderRegistry`:
 
 ```python
-from django_ai_sdk.providers.registry import registry
+from djangosdk.providers.registry import registry
 registry.register("my_provider", MyCustomProvider())
 ```

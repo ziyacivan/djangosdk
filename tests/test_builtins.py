@@ -32,7 +32,7 @@ def _mock_urlopen(response_bytes: bytes):
 
 class TestWebSearchTool:
     def test_search_returns_abstract(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         with patch("urllib.request.urlopen", return_value=_mock_urlopen(
@@ -44,7 +44,7 @@ class TestWebSearchTool:
         assert results[0]["snippet"] == "Django is a web framework."
 
     def test_search_returns_related_topics(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         related = [
@@ -59,7 +59,7 @@ class TestWebSearchTool:
         assert any("REST framework" in r["snippet"] for r in results)
 
     def test_search_respects_max_results(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         related = [{"Text": f"Topic {i}", "FirstURL": f"https://example.com/{i}"} for i in range(10)]
@@ -71,7 +71,7 @@ class TestWebSearchTool:
         assert len(results) <= 3
 
     def test_search_returns_error_on_network_failure(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         with patch("urllib.request.urlopen", side_effect=OSError("network error")):
@@ -81,7 +81,7 @@ class TestWebSearchTool:
         assert "error" in results[0]
 
     def test_callable_interface(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         with patch("urllib.request.urlopen", return_value=_mock_urlopen(
@@ -92,7 +92,7 @@ class TestWebSearchTool:
         assert isinstance(results, list)
 
     def test_to_schema_returns_valid_schema(self):
-        from django_ai_sdk.tools.builtins.web_search import WebSearchTool
+        from djangosdk.tools.builtins.web_search import WebSearchTool
 
         tool = WebSearchTool()
         schema = tool.to_schema()
@@ -107,7 +107,7 @@ class TestWebSearchTool:
 
 class TestWebFetchTool:
     def test_fetch_strips_html_tags(self):
-        from django_ai_sdk.tools.builtins.web_fetch import WebFetchTool
+        from djangosdk.tools.builtins.web_fetch import WebFetchTool
 
         tool = WebFetchTool()
         html = "<html><body><h1>Hello</h1><p>World paragraph.</p></body></html>"
@@ -118,7 +118,7 @@ class TestWebFetchTool:
         assert "Hello" in result
 
     def test_fetch_truncates_to_max_chars(self):
-        from django_ai_sdk.tools.builtins.web_fetch import WebFetchTool
+        from djangosdk.tools.builtins.web_fetch import WebFetchTool
 
         tool = WebFetchTool()
         long_html = "<p>" + "x" * 10000 + "</p>"
@@ -128,7 +128,7 @@ class TestWebFetchTool:
         assert len(result) <= 100
 
     def test_fetch_callable_interface(self):
-        from django_ai_sdk.tools.builtins.web_fetch import WebFetchTool
+        from djangosdk.tools.builtins.web_fetch import WebFetchTool
 
         tool = WebFetchTool()
         html = "<p>Content.</p>"
@@ -138,7 +138,7 @@ class TestWebFetchTool:
         assert "Content" in result
 
     def test_fetch_returns_error_string_on_failure(self):
-        from django_ai_sdk.tools.builtins.web_fetch import WebFetchTool
+        from djangosdk.tools.builtins.web_fetch import WebFetchTool
 
         tool = WebFetchTool()
         with patch("urllib.request.urlopen", side_effect=OSError("403 Forbidden")):
@@ -147,7 +147,7 @@ class TestWebFetchTool:
         assert "403 Forbidden" in result or "error" in result.lower()
 
     def test_to_schema_returns_valid_schema(self):
-        from django_ai_sdk.tools.builtins.web_fetch import WebFetchTool
+        from djangosdk.tools.builtins.web_fetch import WebFetchTool
 
         tool = WebFetchTool()
         schema = tool.to_schema()
@@ -175,19 +175,19 @@ class TestRAGTool:
         sys.modules["pgvector"] = fake_pgvector
         sys.modules["pgvector.django"] = fake_pgvector_django
         # Force reimport of rag module with fake pgvector available
-        sys.modules.pop("django_ai_sdk.tools.builtins.rag", None)
+        sys.modules.pop("djangosdk.tools.builtins.rag", None)
         return mock_cosine
 
     def _remove_fake_pgvector(self):
         sys.modules.pop("pgvector", None)
         sys.modules.pop("pgvector.django", None)
-        sys.modules.pop("django_ai_sdk.tools.builtins.rag", None)
+        sys.modules.pop("djangosdk.tools.builtins.rag", None)
 
     def test_search_calls_embed_and_queryset(self):
         self._inject_fake_pgvector()
         try:
-            from django_ai_sdk.tools.builtins.rag import RAGTool
-            from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+            from djangosdk.tools.builtins.rag import RAGTool
+            from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
 
             mock_model = self._make_model_class()
 
@@ -211,8 +211,8 @@ class TestRAGTool:
 
     def test_search_falls_back_on_import_error(self):
         """When pgvector is not installed, RAGTool raises ImportError."""
-        from django_ai_sdk.tools.builtins.rag import RAGTool
-        from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+        from djangosdk.tools.builtins.rag import RAGTool
+        from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
 
         mock_model = self._make_model_class()
         tool = RAGTool(model=mock_model, text_field="content")
@@ -222,7 +222,7 @@ class TestRAGTool:
                 tool.search("query")
 
     def test_to_schema_returns_valid_schema(self):
-        from django_ai_sdk.tools.builtins.rag import RAGTool
+        from djangosdk.tools.builtins.rag import RAGTool
 
         mock_model = self._make_model_class()
         tool = RAGTool(model=mock_model)
@@ -232,7 +232,7 @@ class TestRAGTool:
         assert "query" in schema["function"]["parameters"]["properties"]
 
     def test_search_returns_error_dict_on_embedding_failure(self):
-        from django_ai_sdk.tools.builtins.rag import RAGTool
+        from djangosdk.tools.builtins.rag import RAGTool
 
         mock_model = self._make_model_class()
         tool = RAGTool(model=mock_model)

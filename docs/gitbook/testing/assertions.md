@@ -1,14 +1,14 @@
 # Assertion Helpers
 
-`django_ai_sdk.testing.assertions` provides helper functions that produce clear, descriptive failure messages when agent behavior does not match expectations.
+`djangosdk.testing.assertions` provides helper functions that produce clear, descriptive failure messages when agent behavior does not match expectations.
 
 ## `assert_prompt_sent`
 
 Assert that the agent sent a prompt containing a given substring to the provider.
 
 ```python
-from django_ai_sdk.testing.assertions import assert_prompt_sent
-from django_ai_sdk.testing.fakes import FakeProvider, override_ai_provider
+from djangosdk.testing.assertions import assert_prompt_sent
+from djangosdk.testing.fakes import FakeProvider, override_ai_provider
 
 def test_prompt_contains_order_id():
     fake = FakeProvider(text="Order found.")
@@ -26,7 +26,7 @@ Raises `AssertionError` with a descriptive message showing all prompts received 
 Assert that the agent triggered a specific tool with the expected arguments.
 
 ```python
-from django_ai_sdk.testing.assertions import assert_tool_called
+from djangosdk.testing.assertions import assert_tool_called
 
 fake = FakeProvider(
     text="Done.",
@@ -44,7 +44,7 @@ assert_tool_called(fake, "cancel_order", order_id="XYZ")
 Assert that every provider call used a specific model.
 
 ```python
-from django_ai_sdk.testing.assertions import assert_model_used
+from djangosdk.testing.assertions import assert_model_used
 
 with override_ai_provider(fake):
     agent.handle("Hello")
@@ -57,7 +57,7 @@ assert_model_used(fake, "gpt-4.1")
 Assert that the system prompt sent to the provider contains a given substring.
 
 ```python
-from django_ai_sdk.testing.assertions import assert_system_prompt_contains
+from djangosdk.testing.assertions import assert_system_prompt_contains
 
 with override_ai_provider(fake):
     agent.handle("Hello")
@@ -69,8 +69,8 @@ assert_system_prompt_contains(fake, "customer support")
 
 ```python
 import pytest
-from django_ai_sdk.testing.fakes import FakeProvider, override_ai_provider
-from django_ai_sdk.testing.assertions import (
+from djangosdk.testing.fakes import FakeProvider, override_ai_provider
+from djangosdk.testing.assertions import (
     assert_prompt_sent,
     assert_tool_called,
     assert_model_used,

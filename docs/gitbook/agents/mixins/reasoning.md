@@ -5,7 +5,7 @@
 ## ReasoningConfig
 
 ```python
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.providers.schemas import ReasoningConfig
 
 config = ReasoningConfig(
     effort="medium",              # "low" | "medium" | "high" — for o3/o4-mini
@@ -19,8 +19,8 @@ config = ReasoningConfig(
 ## OpenAI o3 / o4-mini
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
 
 class ReasoningAgent(Agent):
     provider = "openai"

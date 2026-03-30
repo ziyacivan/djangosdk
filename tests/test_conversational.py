@@ -6,7 +6,7 @@ pytestmark = pytest.mark.django_db
 
 
 def _make_agent_class():
-    from django_ai_sdk.agents.base import Agent
+    from djangosdk.agents.base import Agent
 
     class ChatAgent(Agent):
         provider = "fake"
@@ -17,7 +17,7 @@ def _make_agent_class():
 
 
 def test_start_conversation_creates_db_record():
-    from django_ai_sdk.models.conversation import Conversation
+    from djangosdk.models.conversation import Conversation
 
     ChatAgent = _make_agent_class()
     agent = ChatAgent()
@@ -46,11 +46,11 @@ def test_handle_persists_messages_when_persist_enabled(settings):
         "PROVIDERS": {},
         "CONVERSATION": {"PERSIST": True},
     }
-    from django_ai_sdk.conf import ai_settings
+    from djangosdk.conf import ai_settings
     ai_settings.reload()
 
-    from django_ai_sdk.models.message import Message
-    from django_ai_sdk.testing import FakeProvider, override_ai_provider
+    from djangosdk.models.message import Message
+    from djangosdk.testing import FakeProvider, override_ai_provider
 
     ChatAgent = _make_agent_class()
     agent = ChatAgent()
@@ -83,10 +83,10 @@ def test_load_conversation_messages_returns_history(settings):
         "PROVIDERS": {},
         "CONVERSATION": {"PERSIST": True, "MAX_HISTORY": 50},
     }
-    from django_ai_sdk.conf import ai_settings
+    from djangosdk.conf import ai_settings
     ai_settings.reload()
 
-    from django_ai_sdk.testing import FakeProvider, override_ai_provider
+    from djangosdk.testing import FakeProvider, override_ai_provider
 
     ChatAgent = _make_agent_class()
     agent = ChatAgent()

@@ -9,7 +9,7 @@
 ### Basic Usage
 
 ```python
-from django_ai_sdk.testing.fakes import FakeProvider, override_ai_provider
+from djangosdk.testing.fakes import FakeProvider, override_ai_provider
 from myapp.agents import SupportAgent
 
 def test_support_agent():
@@ -66,7 +66,7 @@ print(request.tools)         # Tool schemas sent
 `FakeAgent` is a pre-wired agent backed by `FakeProvider`. Use it when you need a complete agent without configuring Django settings:
 
 ```python
-from django_ai_sdk.testing.fakes import FakeAgent
+from djangosdk.testing.fakes import FakeAgent
 
 def test_pipeline():
     agent = FakeAgent(text="Order found: shipped.")
@@ -79,7 +79,7 @@ def test_pipeline():
 `override_ai_provider` patches `registry.get()` so all agents in the block use the given provider:
 
 ```python
-from django_ai_sdk.testing.fakes import override_ai_provider, FakeProvider
+from djangosdk.testing.fakes import override_ai_provider, FakeProvider
 
 fake = FakeProvider(text="Test response")
 with override_ai_provider(fake):

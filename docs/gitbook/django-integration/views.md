@@ -18,7 +18,7 @@ uv add "django-ai-sdk[drf]"
 
 ```python
 # myapp/views.py
-from django_ai_sdk.views.chat import ChatAPIView
+from djangosdk.views.chat import ChatAPIView
 from myapp.agents import SupportAgent
 
 class SupportChatView(ChatAPIView):
@@ -68,7 +68,7 @@ POST /api/chat/
 ### Usage
 
 ```python
-from django_ai_sdk.views.streaming import StreamingChatAPIView
+from djangosdk.views.streaming import StreamingChatAPIView
 from myapp.agents import SupportAgent
 
 class SupportStreamView(StreamingChatAPIView):
@@ -142,7 +142,7 @@ Include the SDK's pre-built URL patterns:
 from django.urls import path, include
 
 urlpatterns = [
-    path("ai/", include("django_ai_sdk.urls")),
+    path("ai/", include("djangosdk.urls")),
 ]
 ```
 

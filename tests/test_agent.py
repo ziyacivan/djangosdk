@@ -1,5 +1,5 @@
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.testing import FakeProvider, assert_prompt_sent, override_ai_provider
+from djangosdk.agents.base import Agent
+from djangosdk.testing import FakeProvider, assert_prompt_sent, override_ai_provider
 
 
 class EchoAgent(Agent):
@@ -34,7 +34,7 @@ def test_thinking_response():
 
 
 def test_usage_info():
-    from django_ai_sdk.agents.response import UsageInfo
+    from djangosdk.agents.response import UsageInfo
     usage = UsageInfo(prompt_tokens=20, completion_tokens=10, total_tokens=30)
     fake = FakeProvider(text="OK", usage=usage)
     with override_ai_provider(fake):

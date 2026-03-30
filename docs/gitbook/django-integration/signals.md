@@ -12,7 +12,7 @@ Fired when an agent begins processing a request.
 
 ```python
 from django.dispatch import receiver
-from django_ai_sdk.signals import agent_started
+from djangosdk.signals import agent_started
 
 @receiver(agent_started)
 def on_agent_started(sender, agent, prompt, model, provider, **kwargs):
@@ -26,7 +26,7 @@ Fired when an agent successfully completes a request.
 **kwargs:** `agent`, `response`, `model`, `provider`
 
 ```python
-from django_ai_sdk.signals import agent_completed
+from djangosdk.signals import agent_completed
 
 @receiver(agent_completed)
 def on_agent_completed(sender, agent, response, model, provider, **kwargs):
@@ -40,7 +40,7 @@ Fired when an agent raises an exception.
 **kwargs:** `agent`, `exception`, `model`, `provider`
 
 ```python
-from django_ai_sdk.signals import agent_failed
+from djangosdk.signals import agent_failed
 
 @receiver(agent_failed)
 def on_agent_failed(sender, agent, exception, model, provider, **kwargs):
@@ -55,7 +55,7 @@ Fired when the failover mechanism switches providers.
 **kwargs:** `agent`, `from_provider`, `to_provider`, `reason`
 
 ```python
-from django_ai_sdk.signals import agent_failed_over
+from djangosdk.signals import agent_failed_over
 
 @receiver(agent_failed_over)
 def on_failover(sender, agent, from_provider, to_provider, reason, **kwargs):
@@ -69,7 +69,7 @@ Fired when a prompt cache hit occurs.
 **kwargs:** `agent`, `cache_read_tokens`
 
 ```python
-from django_ai_sdk.signals import cache_hit
+from djangosdk.signals import cache_hit
 
 @receiver(cache_hit)
 def on_cache_hit(sender, agent, cache_read_tokens, **kwargs):
@@ -83,7 +83,7 @@ Fired when no cache hit occurs.
 **kwargs:** `agent`
 
 ```python
-from django_ai_sdk.signals import cache_miss
+from djangosdk.signals import cache_miss
 
 @receiver(cache_miss)
 def on_cache_miss(sender, agent, **kwargs):
@@ -102,7 +102,7 @@ class MyAppConfig(AppConfig):
     name = "myapp"
 
     def ready(self):
-        from django_ai_sdk.signals import agent_completed
+        from djangosdk.signals import agent_completed
         from myapp.handlers import log_completion
         agent_completed.connect(log_completion)
 ```
@@ -110,7 +110,7 @@ class MyAppConfig(AppConfig):
 ## Example: Usage Tracking
 
 ```python
-from django_ai_sdk.signals import agent_completed
+from djangosdk.signals import agent_completed
 from myapp.models import UsageRecord
 
 def track_usage(sender, agent, response, **kwargs):

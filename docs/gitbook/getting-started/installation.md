@@ -34,7 +34,7 @@ uv add --editable ".[drf]"
 # settings.py
 INSTALLED_APPS = [
     ...
-    "django_ai_sdk",
+    "djangosdk",
 ]
 ```
 

@@ -2,7 +2,7 @@
 
 ## Class: `Agent`
 
-**Module:** `django_ai_sdk.agents.base`
+**Module:** `djangosdk.agents.base`
 
 Base class for all AI agents. Inherits from `Promptable`, `ReasoningMixin`, `HasTools`, `HasStructuredOutput`, and `Conversational`.
 
@@ -55,9 +55,9 @@ Returns a copy of this agent bound to the given conversation ID.
 ## Example
 
 ```python
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.providers.schemas import ReasoningConfig
-from django_ai_sdk.tools.decorator import tool
+from djangosdk.agents.base import Agent
+from djangosdk.providers.schemas import ReasoningConfig
+from djangosdk.tools.decorator import tool
 
 @tool
 def search(query: str) -> str:

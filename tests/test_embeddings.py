@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import pytest
-from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding
+from djangosdk.testing.mock_litellm import MockLiteLLMEmbedding
 
 
 class TestEmbed:
     def test_embed_single_string_returns_vector(self):
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.embeddings.embed import embed
 
         with MockLiteLLMEmbedding(vectors=[[0.1, 0.2, 0.3]]):
             result = embed("Django is great.")
@@ -17,7 +17,7 @@ class TestEmbed:
         assert result == [0.1, 0.2, 0.3]
 
     def test_embed_list_returns_list_of_vectors(self):
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.embeddings.embed import embed
 
         vecs = [[0.1, 0.2], [0.3, 0.4]]
         with MockLiteLLMEmbedding(vectors=vecs):
@@ -28,7 +28,7 @@ class TestEmbed:
         assert result[1] == [0.3, 0.4]
 
     def test_embed_uses_correct_model_for_openai(self):
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.embeddings.embed import embed
 
         with MockLiteLLMEmbedding() as mock:
             embed("test", provider="openai")
@@ -37,7 +37,7 @@ class TestEmbed:
         assert "text-embedding" in call_kwargs["model"]
 
     def test_embed_prefixes_provider_for_non_openai(self):
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.embeddings.embed import embed
 
         with MockLiteLLMEmbedding() as mock:
             embed("test", provider="gemini")
@@ -46,7 +46,7 @@ class TestEmbed:
         assert "gemini/" in call_kwargs["model"]
 
     def test_embed_custom_model(self):
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.embeddings.embed import embed
 
         with MockLiteLLMEmbedding() as mock:
             embed("test", provider="openai", model="text-embedding-3-large")
@@ -56,8 +56,8 @@ class TestEmbed:
 
     def test_embed_raises_provider_error_on_litellm_exception(self):
         from unittest.mock import patch
-        from django_ai_sdk.exceptions import ProviderError
-        from django_ai_sdk.embeddings.embed import embed
+        from djangosdk.exceptions import ProviderError
+        from djangosdk.embeddings.embed import embed
 
         with patch("litellm.embedding", side_effect=Exception("quota exceeded")):
             with pytest.raises(ProviderError, match="quota exceeded"):
@@ -65,7 +65,7 @@ class TestEmbed:
 
     @pytest.mark.asyncio
     async def test_aembed_single_string(self):
-        from django_ai_sdk.embeddings.embed import aembed
+        from djangosdk.embeddings.embed import aembed
 
         with MockLiteLLMEmbedding(vectors=[[0.5, 0.6]]):
             result = await aembed("async test")
@@ -74,7 +74,7 @@ class TestEmbed:
 
     @pytest.mark.asyncio
     async def test_aembed_list(self):
-        from django_ai_sdk.embeddings.embed import aembed
+        from djangosdk.embeddings.embed import aembed
 
         with MockLiteLLMEmbedding(vectors=[[0.1], [0.2]]):
             result = await aembed(["a", "b"])
@@ -84,8 +84,8 @@ class TestEmbed:
     @pytest.mark.asyncio
     async def test_aembed_raises_provider_error(self):
         from unittest.mock import patch, AsyncMock
-        from django_ai_sdk.exceptions import ProviderError
-        from django_ai_sdk.embeddings.embed import aembed
+        from djangosdk.exceptions import ProviderError
+        from djangosdk.embeddings.embed import aembed
 
         with patch("litellm.aembedding", new_callable=AsyncMock, side_effect=Exception("error")):
             with pytest.raises(ProviderError):

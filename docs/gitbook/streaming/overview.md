@@ -26,7 +26,7 @@ class StreamChunk:
 Use `agent.stream()` in a standard Django view:
 
 ```python
-from django_ai_sdk.agents.base import Agent
+from djangosdk.agents.base import Agent
 
 class AssistantAgent(Agent):
     provider = "openai"
@@ -45,8 +45,8 @@ Use `agent.astream()` in an async view:
 
 ```python
 from django.http import StreamingHttpResponse
-from django_ai_sdk.agents.base import Agent
-from django_ai_sdk.streaming.async_sse import AsyncSSEResponse
+from djangosdk.agents.base import Agent
+from djangosdk.streaming.async_sse import AsyncSSEResponse
 
 class AssistantAgent(Agent):
     provider = "anthropic"
