@@ -35,7 +35,7 @@ Switching providers is a one-line change. The tool dispatch loop, prompt caching
 ## Getting started
 
 ```bash
-pip install djangosdk
+uv add djangosdk
 ```
 
 ```python
