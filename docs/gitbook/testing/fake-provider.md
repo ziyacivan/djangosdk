@@ -1,6 +1,6 @@
 # FakeProvider & FakeAgent
 
-`django-ai-sdk` ships with test utilities that let you write unit tests without calling real APIs.
+`djangosdk` ships with test utilities that let you write unit tests without calling real APIs.
 
 ## FakeProvider
 

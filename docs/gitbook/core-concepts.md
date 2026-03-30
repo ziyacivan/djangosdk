@@ -31,7 +31,7 @@ You build agents by subclassing `Agent` and declaring class attributes — no `_
 
 ### 2. litellm as the Routing Layer
 
-`django-ai-sdk` never calls provider SDKs directly. Every request goes through `LiteLLMProvider`, which translates the unified `AgentRequest` into the correct litellm call. This means:
+`djangosdk` never calls provider SDKs directly. Every request goes through `LiteLLMProvider`, which translates the unified `AgentRequest` into the correct litellm call. This means:
 
 - Provider switching is a one-line change
 - New providers are automatically supported when litellm adds them

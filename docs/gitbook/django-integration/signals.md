@@ -1,6 +1,6 @@
 # Signals
 
-`django-ai-sdk` fires Django signals at key points in the agent lifecycle. Connect to them for logging, metrics, billing, alerting, or custom side effects.
+`djangosdk` fires Django signals at key points in the agent lifecycle. Connect to them for logging, metrics, billing, alerting, or custom side effects.
 
 ## Available Signals
 

@@ -1,6 +1,6 @@
 # Observability
 
-`django-ai-sdk` supports three observability backends: LangSmith, Langfuse, and OpenTelemetry.
+`djangosdk` supports three observability backends: LangSmith, Langfuse, and OpenTelemetry.
 
 ## Configuration
 
@@ -17,7 +17,7 @@ AI_SDK = {
 [LangSmith](https://smith.langchain.com/) provides tracing, evaluation, and monitoring for AI applications.
 
 ```bash
-uv add "django-ai-sdk[langsmith]"
+uv add "djangosdk[langsmith]"
 ```
 
 ```python
@@ -37,7 +37,7 @@ Every `agent.handle()` call is automatically traced as a LangSmith run.
 [Langfuse](https://langfuse.com/) is an open-source LLM observability platform.
 
 ```bash
-uv add "django-ai-sdk[langfuse]"
+uv add "djangosdk[langfuse]"
 ```
 
 ```python
@@ -56,7 +56,7 @@ AI_SDK = {
 For custom observability pipelines, use the OpenTelemetry backend:
 
 ```bash
-uv add "django-ai-sdk[opentelemetry]"
+uv add "djangosdk[opentelemetry]"
 ```
 
 ```python

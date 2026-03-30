@@ -1,6 +1,6 @@
 # Embeddings
 
-`django-ai-sdk` provides a simple API for generating text embeddings, usable for semantic search, RAG, and similarity comparisons.
+`djangosdk` provides a simple API for generating text embeddings, usable for semantic search, RAG, and similarity comparisons.
 
 ## Basic Usage
 

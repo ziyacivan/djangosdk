@@ -1,6 +1,6 @@
 # Conversation Persistence
 
-`django-ai-sdk` persists conversation history to the Django ORM using two models: `Conversation` and `Message`.
+`djangosdk` persists conversation history to the Django ORM using two models: `Conversation` and `Message`.
 
 ## Database Models
 

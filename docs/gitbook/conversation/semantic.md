@@ -11,7 +11,7 @@ Semantic memory uses vector embeddings to store and retrieve knowledge by meanin
 Semantic memory requires the embeddings module and pgvector:
 
 ```bash
-uv add "django-ai-sdk[pgvector]"
+uv add "djangosdk[pgvector]"
 ```
 
 ```python

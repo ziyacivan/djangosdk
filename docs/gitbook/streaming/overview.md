@@ -1,6 +1,6 @@
 # Streaming
 
-`django-ai-sdk` supports streaming via Server-Sent Events (SSE). Both synchronous (WSGI) and asynchronous (ASGI) streaming are supported.
+`djangosdk` supports streaming via Server-Sent Events (SSE). Both synchronous (WSGI) and asynchronous (ASGI) streaming are supported.
 
 ## StreamChunk
 

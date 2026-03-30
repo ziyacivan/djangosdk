@@ -1,6 +1,6 @@
 # Audio & Images
 
-`django-ai-sdk` provides APIs for audio transcription, text-to-speech synthesis, and image generation.
+`djangosdk` provides APIs for audio transcription, text-to-speech synthesis, and image generation.
 
 ## Audio
 

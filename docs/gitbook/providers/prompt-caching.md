@@ -1,6 +1,6 @@
 # Prompt Caching
 
-`django-ai-sdk` supports native prompt caching for Anthropic and OpenAI, which can significantly reduce costs and latency on repeated requests.
+`djangosdk` supports native prompt caching for Anthropic and OpenAI, which can significantly reduce costs and latency on repeated requests.
 
 ## How It Works
 

@@ -1,12 +1,12 @@
-# django-ai-sdk
+# djangosdk
 
-**django-ai-sdk** is a Django-native AI SDK inspired by the Laravel AI SDK. It provides a unified, agent-centric abstraction over 12+ AI providers, built entirely on top of [litellm](https://github.com/BerriAI/litellm).
+**djangosdk** is a Django-native AI SDK inspired by the Laravel AI SDK. It provides a unified, agent-centric abstraction over 12+ AI providers, built entirely on top of [litellm](https://github.com/BerriAI/litellm).
 
-## Why django-ai-sdk?
+## Why djangosdk?
 
 Django is the standard framework for Python web development, yet as of 2026 there is a significant ecosystem gap when it comes to AI integration. Developers must wire up provider-specific SDKs individually, rewrite the same streaming, tool-calling, and conversation history boilerplate in every project, and maintain separate code paths for every provider.
 
-`django-ai-sdk` solves this with:
+`djangosdk` solves this with:
 
 | Feature | Description |
 |---|---|

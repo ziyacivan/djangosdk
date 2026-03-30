@@ -1,6 +1,6 @@
 # MCP Support
 
-`django-ai-sdk` supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) — the emerging standard for connecting AI agents to external tools and data sources.
+`djangosdk` supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) — the emerging standard for connecting AI agents to external tools and data sources.
 
 ## Overview
 
@@ -75,7 +75,7 @@ urlpatterns = [
 
 ## MCP Transport
 
-`django-ai-sdk` supports two MCP transport types:
+`djangosdk` supports two MCP transport types:
 
 | Transport | Use case |
 |---|---|

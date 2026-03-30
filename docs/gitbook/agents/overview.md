@@ -1,6 +1,6 @@
 # Agents
 
-The `Agent` class is the primary abstraction in `django-ai-sdk`. An agent encapsulates a provider, a model, a system prompt, tools, and any configuration needed to handle a request.
+The `Agent` class is the primary abstraction in `djangosdk`. An agent encapsulates a provider, a model, a system prompt, tools, and any configuration needed to handle a request.
 
 ## Defining an Agent
 

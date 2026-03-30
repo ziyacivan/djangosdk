@@ -1,13 +1,13 @@
 # DRF Views
 
-`django-ai-sdk` provides two pre-built Django REST Framework views for building AI endpoints.
+`djangosdk` provides two pre-built Django REST Framework views for building AI endpoints.
 
 ## Setup
 
 Ensure `djangorestframework` is installed:
 
 ```bash
-uv add "django-ai-sdk[drf]"
+uv add "djangosdk[drf]"
 ```
 
 ## ChatAPIView

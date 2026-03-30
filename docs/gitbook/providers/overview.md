@@ -1,6 +1,6 @@
 # Providers
 
-Providers are the bridge between `django-ai-sdk` and the underlying AI APIs. The SDK ships with one concrete provider — `LiteLLMProvider` — which routes every request through [litellm](https://github.com/BerriAI/litellm), giving you access to 100+ models across 12+ providers.
+Providers are the bridge between `djangosdk` and the underlying AI APIs. The SDK ships with one concrete provider — `LiteLLMProvider` — which routes every request through [litellm](https://github.com/BerriAI/litellm), giving you access to 100+ models across 12+ providers.
 
 ## Supported Providers
 

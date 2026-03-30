@@ -1,6 +1,6 @@
 # Django Admin
 
-`django-ai-sdk` registers `Conversation` and `Message` models in Django Admin, giving you a built-in interface for browsing and managing AI interactions.
+`djangosdk` registers `Conversation` and `Message` models in Django Admin, giving you a built-in interface for browsing and managing AI interactions.
 
 ## What's Available
 

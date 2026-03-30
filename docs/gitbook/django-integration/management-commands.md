@@ -1,6 +1,6 @@
 # Management Commands
 
-`django-ai-sdk` provides two management commands for configuration validation and diagnostics.
+`djangosdk` provides two management commands for configuration validation and diagnostics.
 
 ## `ai_sdk_check`
 

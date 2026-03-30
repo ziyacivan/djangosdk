@@ -1,6 +1,6 @@
 # Settings Reference
 
-All `django-ai-sdk` settings live in `AI_SDK` in your `settings.py`. Unspecified keys use the defaults shown below.
+All `djangosdk` settings live in `AI_SDK` in your `settings.py`. Unspecified keys use the defaults shown below.
 
 ## Complete Reference
 

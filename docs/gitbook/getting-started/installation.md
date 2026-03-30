@@ -9,7 +9,7 @@
 ## Install from PyPI
 
 ```bash
-uv add django-ai-sdk
+uv add djangosdk
 ```
 
 ## Install with DRF support
@@ -17,14 +17,14 @@ uv add django-ai-sdk
 If you want to use the pre-built `ChatAPIView` and `StreamingChatAPIView`:
 
 ```bash
-uv add "django-ai-sdk[drf]"
+uv add "djangosdk[drf]"
 ```
 
 ## Install from source
 
 ```bash
-git clone https://github.com/ziyacivan/django-ai-sdk
-cd django-ai-sdk
+git clone https://github.com/ziyacivan/djangosdk
+cd djangosdk
 uv add --editable ".[drf]"
 ```
 

@@ -1,6 +1,6 @@
 # Rate Limiting
 
-`django-ai-sdk` supports token-based rate limiting — rate limits based on the number of tokens consumed, not the number of requests. This is more accurate for AI workloads where a single request can consume vastly different amounts of tokens.
+`djangosdk` supports token-based rate limiting — rate limits based on the number of tokens consumed, not the number of requests. This is more accurate for AI workloads where a single request can consume vastly different amounts of tokens.
 
 ## Configuration
 

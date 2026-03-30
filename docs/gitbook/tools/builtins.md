@@ -1,6 +1,6 @@
 # Built-in Tools
 
-`django-ai-sdk` ships with a set of ready-to-use built-in tools under `djangosdk.tools.builtins`.
+`djangosdk` ships with a set of ready-to-use built-in tools under `djangosdk.tools.builtins`.
 
 ## Web Search
 

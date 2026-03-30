@@ -1,4 +1,4 @@
-# Product Requirements Document: django-ai-sdk
+# Product Requirements Document: djangosdk
 
 **Version:** 2.0
 **Author:** Yusuf Ziya Cıvan
@@ -44,7 +44,7 @@ Laravel released its official AI SDK in February 2026. The PHP community gained 
 
 ### The Solution
 
-`django-ai-sdk` provides:
+`djangosdk` provides:
 
 - **Unified provider abstraction** — 12+ AI providers, one API
 - **Agent-centric design** — `Agent` class + mixin composition (inspired by Laravel AI SDK, using Python idioms)
@@ -73,9 +73,9 @@ Laravel AI SDK was released in February 2026 and became stable with Laravel 13 (
 - Database-backed conversation history, Eloquent-native vector search
 - GitHub: 735 stars, 159 forks (actively maintained as of March 28, 2026)
 
-**Differentiators for `django-ai-sdk`:**
+**Differentiators for `djangosdk`:**
 
-| Topic | Laravel AI SDK | django-ai-sdk |
+| Topic | Laravel AI SDK | djangosdk |
 |---|---|---|
 | Reasoning model support | Limited | Native parameters for o3, Claude 3.7, R1 |
 | Prompt caching | Not available | Anthropic + OpenAI native caching |
@@ -303,7 +303,7 @@ Django ORM calls inside async contexts are made via the `sync_to_async` bridge.
 
 MCP is the universal tool protocol standardized in 2026 by major AI providers (OpenAI, Anthropic, Google, Microsoft, Amazon).
 
-`django-ai-sdk` offers two-way MCP support:
+`djangosdk` offers two-way MCP support:
 
 1. **MCP Client** — Agents consume tools from external MCP servers
 2. **MCP Server** — Django application exposes its tools as an MCP server
@@ -1173,7 +1173,7 @@ all = [
 
 ### ⚠️ LiteLLM Security Notice (March 2026)
 
-LiteLLM v1.82.7 and v1.82.8 were quarantined from PyPI on March 22–23, 2026 due to a supply chain security incident. `django-ai-sdk` is pinned to the last known-safe version, **v1.82.6**, and actively monitors release notes for verified safe versions.
+LiteLLM v1.82.7 and v1.82.8 were quarantined from PyPI on March 22–23, 2026 due to a supply chain security incident. `djangosdk` is pinned to the last known-safe version, **v1.82.6**, and actively monitors release notes for verified safe versions.
 
 Version is pinned explicitly in `pyproject.toml`:
 ```toml
@@ -1225,7 +1225,7 @@ Security policy: Every major litellm update undergoes dependency chain verificat
 **Quality & Release**
 - [ ] Test suite (≥90% coverage target)
 - [ ] README, Quickstart guide
-- [ ] PyPI release: `uv add django-ai-sdk`
+- [ ] PyPI release: `uv add djangosdk`
 
 ---
 
@@ -1281,7 +1281,7 @@ Security policy: Every major litellm update undergoes dependency chain verificat
 
 ### Ecosystem Impact
 
-- 5+ blog posts or tutorials referencing `django-ai-sdk`
+- 5+ blog posts or tutorials referencing `djangosdk`
 - At least 1 popular Django starter kit integrates it
 - Community discussion on Django Forum or Discord
 - 1 presentation / talk at a Django conference (DjangoCon)
