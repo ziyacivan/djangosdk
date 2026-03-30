@@ -33,10 +33,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ziyacivan/django-ai-sdk"
-Repository = "https://github.com/ziyacivan/django-ai-sdk"
-Issues = "https://github.com/ziyacivan/django-ai-sdk/issues"
-Changelog = "https://github.com/ziyacivan/django-ai-sdk/blob/master/CHANGELOG.md"
+Homepage = "https://djangosdk.com"
+Documentation = "https://djangosdk.com"
+Repository = "https://github.com/ziyacivan/djangosdk"
+Issues = "https://github.com/ziyacivan/djangosdk/issues"
+Changelog = "https://github.com/ziyacivan/djangosdk/blob/master/CHANGELOG.md"
 
 [project.optional-dependencies]
 drf = ["djangorestframework>=3.14"]
