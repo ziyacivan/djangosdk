@@ -1,4 +1,3 @@
-import pytest
 from django_ai_sdk.conf import AiSettings
 
 

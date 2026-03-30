@@ -7,7 +7,6 @@ try:
     from rest_framework.views import APIView
 
     from django_ai_sdk.agents.base import Agent
-    from django_ai_sdk.streaming.sse import SyncSSEResponse
 
     class StreamingChatAPIView(APIView):
         """

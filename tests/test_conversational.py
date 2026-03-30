@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-from unittest.mock import patch
 
 pytestmark = pytest.mark.django_db
 
@@ -29,7 +28,6 @@ def test_start_conversation_creates_db_record():
 
 
 def test_with_conversation_binds_id():
-    from django_ai_sdk.models.conversation import Conversation
 
     ChatAgent = _make_agent_class()
     agent = ChatAgent()
@@ -51,7 +49,6 @@ def test_handle_persists_messages_when_persist_enabled(settings):
     from django_ai_sdk.conf import ai_settings
     ai_settings.reload()
 
-    from django_ai_sdk.models.conversation import Conversation
     from django_ai_sdk.models.message import Message
     from django_ai_sdk.testing import FakeProvider, override_ai_provider
 
@@ -89,8 +86,6 @@ def test_load_conversation_messages_returns_history(settings):
     from django_ai_sdk.conf import ai_settings
     ai_settings.reload()
 
-    from django_ai_sdk.models.conversation import Conversation
-    from django_ai_sdk.models.message import Message
     from django_ai_sdk.testing import FakeProvider, override_ai_provider
 
     ChatAgent = _make_agent_class()

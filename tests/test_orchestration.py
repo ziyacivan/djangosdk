@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from django_ai_sdk.agents.base import Agent
 from django_ai_sdk.orchestration.patterns import handoff, pipeline, parallel
-from django_ai_sdk.testing import FakeProvider, override_ai_provider
+from django_ai_sdk.testing import FakeProvider
 
 
 class AgentA(Agent):
@@ -24,8 +24,6 @@ def test_pipeline_chains_two_agents():
 
     a = AgentA()
     b = AgentB()
-
-    original_get = None
 
     # Patch each agent's _get_provider independently
     from unittest.mock import patch

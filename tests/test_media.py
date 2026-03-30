@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import io
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from django_ai_sdk.testing.mock_litellm import MockLiteLLMImage, MockLiteLLMAudio
 
 
@@ -109,7 +109,7 @@ class TestTranscribe:
         from django_ai_sdk.audio.transcribe import transcribe
 
         fake_file = io.BytesIO(b"audio")
-        with MockLiteLLMAudio(transcription_text="File audio text.") as mock, \
+        with MockLiteLLMAudio(transcription_text="File audio text."), \
              patch("builtins.open", return_value=fake_file.__enter__()):
             result = transcribe("/tmp/audio.mp3")
 

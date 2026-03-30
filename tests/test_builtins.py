@@ -184,7 +184,7 @@ class TestRAGTool:
         sys.modules.pop("django_ai_sdk.tools.builtins.rag", None)
 
     def test_search_calls_embed_and_queryset(self):
-        mock_cosine_cls = self._inject_fake_pgvector()
+        self._inject_fake_pgvector()
         try:
             from django_ai_sdk.tools.builtins.rag import RAGTool
             from django_ai_sdk.testing.mock_litellm import MockLiteLLMEmbedding

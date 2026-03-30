@@ -28,7 +28,6 @@ from __future__ import annotations
 import contextlib
 import json
 from types import SimpleNamespace
-from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 

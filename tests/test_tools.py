@@ -1,5 +1,5 @@
 import pytest
-from django_ai_sdk.tools.decorator import tool, _build_tool_schema
+from django_ai_sdk.tools.decorator import tool
 from django_ai_sdk.tools.registry import ToolRegistry
 from django_ai_sdk.exceptions import ToolError
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from django.http import JsonResponse, StreamingHttpResponse
+from django.http import JsonResponse
 from django.views import View
 
 from django_ai_sdk.mcp.decorators import get_registered_resources, get_registered_tools

@@ -5,10 +5,9 @@ import pytest
 from django_ai_sdk.agents.base import Agent
 from django_ai_sdk.agents.request import AgentRequest
 from django_ai_sdk.providers.litellm_provider import LiteLLMProvider
-from django_ai_sdk.providers.schemas import ProviderConfig, ReasoningConfig
+from django_ai_sdk.providers.schemas import ProviderConfig
 from django_ai_sdk.testing.mock_litellm import (
     MockLiteLLMCompletion,
-    make_completion_response,
 )
 
 
@@ -164,7 +163,6 @@ async def test_astream_yields_chunks():
 # --- provider_config injection ---
 
 def test_complete_passes_api_key_from_config():
-    from unittest.mock import patch, call
     config = ProviderConfig(name="openai", api_key="sk-test-key")
     provider = LiteLLMProvider(provider_config=config)
     req = _req()

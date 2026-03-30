@@ -3,8 +3,7 @@ from __future__ import annotations
 
 import sys
 import types
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 
 def _inject_fake_module(name: str, **attrs) -> MagicMock:

@@ -53,7 +53,6 @@ def cost_report(days: int = 7) -> dict[str, Any]:
         report = cost_report(days=7)
         # {"openai": {"total_usd": 4.23, "total_tokens": 1_200_000}, ...}
     """
-    from django.db.models import Sum
     from django.utils import timezone
 
     from django_ai_sdk.models.message import Message

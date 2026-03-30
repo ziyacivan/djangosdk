@@ -39,7 +39,6 @@ def embed(
     except ImportError as exc:
         raise ImportError("litellm is required. Run: pip install litellm") from exc
 
-    from django_ai_sdk.conf import ai_settings
     from django_ai_sdk.providers.registry import registry
 
     provider_config = registry.get_config(provider)

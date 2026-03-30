@@ -1,20 +1,18 @@
 from __future__ import annotations
 
 import pytest
-from unittest.mock import patch, MagicMock
 
 from django_ai_sdk.agents.request import AgentRequest
-from django_ai_sdk.agents.response import UsageInfo
 from django_ai_sdk.exceptions import ConfigurationError, ProviderError
 from django_ai_sdk.providers.registry import ProviderRegistry
-from django_ai_sdk.providers.schemas import ProviderConfig, ReasoningConfig
+from django_ai_sdk.providers.schemas import ReasoningConfig
 from django_ai_sdk.providers.cache import PromptCacheMiddleware
 from django_ai_sdk.providers.litellm_provider import (
     LiteLLMProvider,
     _is_reasoning_model,
     _build_litellm_params,
 )
-from django_ai_sdk.testing import FakeProvider, override_ai_provider
+from django_ai_sdk.testing import FakeProvider
 
 
 # --- _is_reasoning_model ---

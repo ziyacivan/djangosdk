@@ -1,4 +1,3 @@
-import pytest
 from django_ai_sdk.agents.base import Agent
 from django_ai_sdk.testing import FakeProvider, assert_prompt_sent, override_ai_provider
 
