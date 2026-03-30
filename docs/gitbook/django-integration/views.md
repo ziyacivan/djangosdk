@@ -7,7 +7,7 @@
 Ensure `djangorestframework` is installed:
 
 ```bash
-pip install django-ai-sdk[drf]
+uv add "django-ai-sdk[drf]"
 ```
 
 ## ChatAPIView

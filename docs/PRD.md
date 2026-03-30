@@ -1225,7 +1225,7 @@ Security policy: Every major litellm update undergoes dependency chain verificat
 **Quality & Release**
 - [ ] Test suite (≥90% coverage target)
 - [ ] README, Quickstart guide
-- [ ] PyPI release: `pip install django-ai-sdk`
+- [ ] PyPI release: `uv add django-ai-sdk`
 
 ---
 

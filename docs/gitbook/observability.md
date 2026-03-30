@@ -17,7 +17,7 @@ AI_SDK = {
 [LangSmith](https://smith.langchain.com/) provides tracing, evaluation, and monitoring for AI applications.
 
 ```bash
-pip install django-ai-sdk[langsmith]
+uv add "django-ai-sdk[langsmith]"
 ```
 
 ```python
@@ -37,7 +37,7 @@ Every `agent.handle()` call is automatically traced as a LangSmith run.
 [Langfuse](https://langfuse.com/) is an open-source LLM observability platform.
 
 ```bash
-pip install django-ai-sdk[langfuse]
+uv add "django-ai-sdk[langfuse]"
 ```
 
 ```python
@@ -56,7 +56,7 @@ AI_SDK = {
 For custom observability pipelines, use the OpenTelemetry backend:
 
 ```bash
-pip install django-ai-sdk[opentelemetry]
+uv add "django-ai-sdk[opentelemetry]"
 ```
 
 ```python

@@ -68,5 +68,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-[Unreleased]: https://github.com/yusufziyacivan/django-ai-sdk/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/yusufziyacivan/django-ai-sdk/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ziyacivan/django-ai-sdk/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/ziyacivan/django-ai-sdk/releases/tag/v0.1.0

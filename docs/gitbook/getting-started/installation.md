@@ -9,7 +9,7 @@
 ## Install from PyPI
 
 ```bash
-pip install django-ai-sdk
+uv add django-ai-sdk
 ```
 
 ## Install with DRF support
@@ -17,15 +17,15 @@ pip install django-ai-sdk
 If you want to use the pre-built `ChatAPIView` and `StreamingChatAPIView`:
 
 ```bash
-pip install django-ai-sdk[drf]
+uv add "django-ai-sdk[drf]"
 ```
 
 ## Install from source
 
 ```bash
-git clone https://github.com/yusufziyacivan/django-ai-sdk
+git clone https://github.com/ziyacivan/django-ai-sdk
 cd django-ai-sdk
-pip install -e ".[drf]"
+uv add --editable ".[drf]"
 ```
 
 ## Add to INSTALLED_APPS
@@ -51,7 +51,7 @@ python manage.py migrate
 **Always pin `litellm==1.82.6`.** There was a supply chain incident in March 2026 affecting later versions. Before upgrading, verify package integrity:
 
 ```bash
-pip show litellm | grep -E "Name|Version|Location"
+uv pip show litellm | grep -E "Name|Version|Location"
 # Verify the hash against the known-good release on PyPI
 ```
 

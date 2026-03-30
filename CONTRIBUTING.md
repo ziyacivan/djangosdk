@@ -6,11 +6,11 @@ Thank you for your interest in contributing! This document explains how to get s
 
 ```bash
 # Clone the repo
-git clone https://github.com/yusufziyacivan/django-ai-sdk.git
+git clone https://github.com/ziyacivan/django-ai-sdk.git
 cd django-ai-sdk
 
 # Install with dev extras (using uv)
-uv pip install -e ".[dev]"
+uv add --editable ".[dev]"
 
 # Run the test suite
 pytest tests/ -v
