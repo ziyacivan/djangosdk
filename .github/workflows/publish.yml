@@ -62,7 +62,7 @@ jobs:
   publish-testpypi:
     needs: build
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'a') || contains(github.ref, 'b') || contains(github.ref, 'rc')
+    if: contains(github.ref_name, 'a') || contains(github.ref_name, 'b') || contains(github.ref_name, 'rc')
     environment: testpypi
     permissions:
       id-token: write
@@ -83,7 +83,7 @@ jobs:
   publish-pypi:
     needs: build
     runs-on: ubuntu-latest
-    if: "!contains(github.ref, 'a') && !contains(github.ref, 'b') && !contains(github.ref, 'rc')"
+    if: "!contains(github.ref_name, 'a') && !contains(github.ref_name, 'b') && !contains(github.ref_name, 'rc')"
     environment: pypi
     permissions:
       id-token: write
