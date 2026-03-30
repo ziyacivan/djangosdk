@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Status
 
-This is a **pre-implementation** project. The full specification lives in `docs/PRD.md`. No implementation code exists yet. All architecture decisions should follow the PRD.
+**All three phases are complete.** The full specification lives in `docs/PRD.md`. Implementation follows the PRD architecture.
+
+- v0.1.0 (alpha) — all planned modules implemented across Phase 1, 2, and 3
 
 ## Architecture Overview
 
@@ -19,7 +21,7 @@ Agent Layer: Agent + Promptable + HasTools + HasStructuredOutput + Conversationa
         ↓
 Provider Abstraction: AbstractProvider → LiteLLMProvider + ProviderRegistry + PromptCacheMiddleware
         ↓
-litellm ≥1.82.6  (OpenAI / Anthropic / Gemini / Groq / DeepSeek / Mistral / xAI / Ollama / ...)
+litellm ==1.82.6  (OpenAI / Anthropic / Gemini / Groq / DeepSeek / Mistral / xAI / Ollama / ...)
         ↓
 Django Integration: ORM Models | DRF Views | AppConfig | Settings | Signals | Admin
         ↓
@@ -36,8 +38,8 @@ Observability: OpenTelemetry | LangSmith | Langfuse
 
 ### Package Layout (`django_ai_sdk/`)
 
-| Module | Purpose |
-|---|---|
+| Module | Purpose | Status |
+|---|---|---|
 | `agents/base.py` | `Agent` class composing all mixins |
 | `agents/mixins/` | `promptable.py`, `conversational.py`, `has_tools.py`, `has_structured_output.py`, `reasoning.py` |
 | `agents/request.py` / `response.py` | `AgentRequest`, `AgentResponse`, `UsageInfo`, `ThinkingBlock` dataclasses |
@@ -48,6 +50,7 @@ Observability: OpenTelemetry | LangSmith | Langfuse
 | `providers/schemas.py` | `ProviderConfig`, `ModelConfig`, `ReasoningConfig` |
 | `tools/decorator.py` | `@tool` decorator — docstring → description, type hints → JSON schema |
 | `tools/registry.py` | `ToolRegistry` per-agent; drives the dispatch loop |
+| `tools/builtins/` | `web_search.py`, `web_fetch.py`, `rag.py` built-in tools |
 | `models/` | `Conversation` + `Message` ORM models |
 | `serializers/` | DRF serializers for `Conversation` and `Message` |
 | `views/chat.py` | `ChatAPIView` (DRF) |
@@ -55,6 +58,17 @@ Observability: OpenTelemetry | LangSmith | Langfuse
 | `streaming/sse.py` | `format_sse_chunk()`, `SyncSSEResponse` |
 | `streaming/async_sse.py` | `AsyncSSEResponse` |
 | `structured/output.py` | `StructuredOutput`, JSON schema extraction from Pydantic v2 |
+| `memory/base.py` | `BaseMemory` ABC |
+| `memory/episodic.py` | `EpisodicMemory` — DB-backed conversation history |
+| `memory/semantic.py` | `SemanticMemory` — vector store / pgvector RAG |
+| `mcp/` | Model Context Protocol server/client + decorators |
+| `embeddings/` | Embedding generation (sync & async) |
+| `observability/` | LangSmith, Langfuse, OpenTelemetry integrations |
+| `ratelimit/` | Token-based rate limiting with decorators |
+| `analytics/` | Cost reporting for AI API calls |
+| `orchestration/` | Evaluator patterns & agentic orchestration |
+| `audio/` | Transcription & speech synthesis |
+| `images/` | Image generation |
 | `testing/fakes.py` | `FakeProvider`, `FakeAgent` |
 | `testing/assertions.py` | `assert_prompt_sent()`, `assert_tool_called()` |
 | `signals.py` | `agent_started`, `agent_completed`, `agent_failed`, `cache_hit`, `cache_miss` |
@@ -80,7 +94,7 @@ Observability: OpenTelemetry | LangSmith | Langfuse
 ## Dependencies
 
 - Python ≥ 3.11, Django ≥ 4.2
-- `litellm ≥ 1.82.6` — **pin this version**; there was a supply chain incident in March 2026, so verify package integrity before upgrading
+- `litellm ==1.82.6` — **pin this exact version**; there was a supply chain incident in March 2026, verify package integrity before upgrading
 - `pydantic ≥ 2.0`
 - `djangorestframework` (optional, for DRF views/serializers)
 
@@ -103,7 +117,8 @@ AI_SDK = {
 - Use `FakeProvider` for unit tests — never call real APIs in tests
 - Use `assert_prompt_sent()` and `assert_tool_called()` from `django_ai_sdk.testing.assertions`
 - Target: 90% test coverage
-- Run tests: `pytest` (once `pyproject.toml` and test infrastructure are set up)
+- Run tests: `pytest`
+- 27 test files cover all major modules
 
 ## Management Commands
 
@@ -112,6 +127,6 @@ AI_SDK = {
 
 ## Phase Scope
 
-- **Phase 1 (MVP):** Everything in `agents/`, `providers/`, `tools/`, `streaming/`, `structured/`, `models/`, `serializers/`, `views/`, `testing/`, `signals.py`, `conf.py`, `apps.py`, management commands
-- **Phase 2:** `mcp/`, `memory/episodic.py`, `observability/`, `tools/builtins/web_*.py`, embeddings + pgvector RAG, token-based rate limiting
-- **Phase 3:** `memory/semantic.py`, multi-agent orchestration, image/audio generation, Django Admin integration
+- **Phase 1 (MVP) — Complete:** `agents/`, `providers/`, `tools/`, `streaming/`, `structured/`, `models/`, `serializers/`, `views/`, `testing/`, `signals.py`, `conf.py`, `apps.py`, management commands
+- **Phase 2 — Complete:** `mcp/`, `memory/` (episodic + semantic), `observability/`, `tools/builtins/`, `embeddings/`, `ratelimit/`, `analytics/`, `orchestration/`, `audio/`, `images/`
+- **Phase 3 — Complete:** Production hardening, public examples/docs, full provider integration tests, pgvector RAG hardening, Django Admin integration
