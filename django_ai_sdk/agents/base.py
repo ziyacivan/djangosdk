@@ -42,3 +42,9 @@ class Agent(Promptable, ReasoningMixin, HasTools, HasStructuredOutput, Conversat
     reasoning: ReasoningConfig | None = None
     enable_cache: bool = True
     max_tool_iterations: int = 10
+
+    # Phase 2 — MCP server connections.
+    # Each entry is a dict accepted by MCPTransportConfig.from_dict():
+    #   {"url": "https://mcp.example.com", "transport": "http"}
+    #   {"command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem"]}
+    mcp_servers: list[dict] = []

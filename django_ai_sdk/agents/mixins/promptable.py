@@ -37,6 +37,7 @@ class Promptable:
         messages.append({"role": "user", "content": prompt})
 
         tool_schemas = getattr(self, "_get_tool_schemas", lambda: [])()
+        tool_schemas = list(tool_schemas) + self._get_mcp_tool_schemas()
         output_schema = getattr(self, "_get_output_json_schema", lambda: None)()
 
         return AgentRequest(
@@ -57,6 +58,35 @@ class Promptable:
         from django_ai_sdk.providers.registry import registry
         name = getattr(self, "provider", "") or ai_settings.DEFAULT_PROVIDER
         return registry.get(name)
+
+    def _get_mcp_tool_schemas(self) -> list[dict]:
+        """Return tool schemas from all configured MCP servers."""
+        mcp_servers = getattr(self, "mcp_servers", [])
+        if not mcp_servers:
+            return []
+        schemas = []
+        try:
+            from django_ai_sdk.mcp.client import MCPClient
+            for server_cfg in mcp_servers:
+                client = MCPClient.from_dict(server_cfg)
+                schemas.extend(client.to_tool_schemas())
+        except Exception:
+            pass  # MCP failures are non-fatal
+        return schemas
+
+    def _dispatch_mcp_tool(self, tool_name: str, arguments: dict):
+        """Try to dispatch a tool call to an MCP server."""
+        mcp_servers = getattr(self, "mcp_servers", [])
+        try:
+            from django_ai_sdk.mcp.client import MCPClient
+            for server_cfg in mcp_servers:
+                client = MCPClient.from_dict(server_cfg)
+                available = {t["name"] for t in client.list_tools()}
+                if tool_name in available:
+                    return client.call_tool(tool_name, arguments)
+        except Exception:
+            pass
+        return None
 
     def handle(self, prompt: str, **kwargs: Any) -> AgentResponse:
         """Synchronous, blocking completion with tool-call loop."""

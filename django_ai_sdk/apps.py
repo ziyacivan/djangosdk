@@ -14,3 +14,11 @@ class AiSdkConfig(AppConfig):
         raw = getattr(django_settings, "AI_SDK", {})
         if isinstance(raw, dict):
             registry.configure(raw)
+
+        # Initialize observability backend (Phase 2)
+        if isinstance(raw, dict) and raw.get("OBSERVABILITY", {}).get("BACKEND"):
+            try:
+                from django_ai_sdk.observability import setup_observability
+                setup_observability(raw)
+            except Exception:
+                pass  # Observability is non-critical — never block startup

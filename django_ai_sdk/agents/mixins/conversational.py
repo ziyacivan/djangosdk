@@ -39,6 +39,64 @@ class Conversational:
         self._conversation_id = str(conv.id)
         return conv
 
+    def _maybe_auto_summarize(self, total_count: int, max_history: int) -> None:
+        """
+        When ``AUTO_SUMMARIZE`` is enabled and the conversation exceeds
+        ``MAX_HISTORY``, generate a summary of older messages and store it as
+        the first message so the context stays within the token budget.
+        """
+        from django_ai_sdk.conf import ai_settings
+
+        cfg = ai_settings.get("CONVERSATION", {})
+        if not cfg.get("AUTO_SUMMARIZE", False):
+            return
+        if total_count <= max_history:
+            return
+
+        from django_ai_sdk.models.message import Message
+        from django_ai_sdk.providers.registry import registry
+
+        old_msgs = list(
+            Message.objects.filter(conversation_id=self._conversation_id)
+            .order_by("created_at")[: total_count - max_history]
+        )
+        if not old_msgs:
+            return
+
+        # Build a compact transcript for the summarization call
+        transcript = "\n".join(
+            f"{m.role.upper()}: {m.content}" for m in old_msgs if m.content
+        )
+        summarize_prompt = (
+            f"Summarize the following conversation transcript concisely:\n\n{transcript}"
+        )
+
+        try:
+            from django_ai_sdk.agents.request import AgentRequest
+
+            provider_name = getattr(self, "provider", "") or ai_settings.DEFAULT_PROVIDER
+            model = getattr(self, "model", "") or ai_settings.DEFAULT_MODEL
+            req = AgentRequest(
+                messages=[{"role": "user", "content": summarize_prompt}],
+                model=model,
+                provider=provider_name,
+                system_prompt="You are a helpful summarizer.",
+            )
+            provider = registry.get(provider_name)
+            summary_response = provider.complete(req)
+            summary_text = summary_response.text
+        except Exception:
+            summary_text = "[Earlier conversation summarized — full history unavailable.]"
+
+        # Delete old messages and insert summary as a system message
+        ids_to_delete = [m.id for m in old_msgs]
+        Message.objects.filter(id__in=ids_to_delete).delete()
+        Message.objects.create(
+            conversation_id=self._conversation_id,
+            role=Message.Role.SYSTEM,
+            content=f"[Summary of earlier conversation]\n{summary_text}",
+        )
+
     def _load_conversation_messages(self) -> list[dict[str, Any]]:
         """Load persisted messages for the current conversation."""
         if not self._conversation_id:
@@ -48,6 +106,12 @@ class Conversational:
         from django_ai_sdk.models.message import Message
 
         max_history = ai_settings.get("CONVERSATION", {}).get("MAX_HISTORY", 50)
+
+        total_count = Message.objects.filter(
+            conversation_id=self._conversation_id
+        ).count()
+        self._maybe_auto_summarize(total_count, max_history)
+
         messages = (
             Message.objects
             .filter(conversation_id=self._conversation_id)
