@@ -83,11 +83,18 @@ def mcp_resource(
 
 def _build_input_schema(fn: Callable) -> dict:
     """Build a minimal JSON Schema from function type annotations."""
+    import typing
+
     sig = inspect.signature(fn)
+    try:
+        hints = typing.get_type_hints(fn)
+    except Exception:
+        hints = {}
+
     properties: dict[str, Any] = {}
     required: list[str] = []
 
-    _type_map = {
+    _type_map: dict[Any, str] = {
         str: "string",
         int: "integer",
         float: "number",
@@ -99,7 +106,7 @@ def _build_input_schema(fn: Callable) -> dict:
     for param_name, param in sig.parameters.items():
         if param_name == "self":
             continue
-        annotation = param.annotation
+        annotation = hints.get(param_name, inspect.Parameter.empty)
         json_type = _type_map.get(annotation, "string")
         properties[param_name] = {"type": json_type}
         if param.default is inspect.Parameter.empty:

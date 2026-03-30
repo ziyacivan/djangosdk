@@ -1,8 +1,10 @@
 SECRET_KEY = "test-secret-key-django-ai-sdk"
 DEBUG = True
+ROOT_URLCONF = "tests.urls"
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
+    "rest_framework",
     "django_ai_sdk",
 ]
 DATABASES = {
