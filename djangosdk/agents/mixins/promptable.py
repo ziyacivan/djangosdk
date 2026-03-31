@@ -127,12 +127,10 @@ class Promptable:
     def _run_tool_loop(self, prompt: str, extra_messages: list | None = None) -> AgentResponse:
         provider = self._get_provider()
         max_iters = getattr(self, "max_tool_iterations", 10)
-        extra = list(extra_messages or [])
+
+        request = self._build_request(prompt, extra_messages=extra_messages)
 
         for _ in range(max_iters):
-            request = self._build_request(prompt, extra_messages=extra[1:] if extra else None)
-            if extra:
-                request.messages = request.messages[:-1] + extra + [request.messages[-1]]
             response = provider.complete(request)
 
             if not response.tool_calls:
@@ -155,8 +153,8 @@ class Promptable:
                 ],
             }
             tool_results = getattr(self, "_execute_tool_calls", lambda x: [])(response.tool_calls)
-            extra = extra + [assistant_msg] + tool_results
-            prompt = ""  # Subsequent turns use tool results, not a new user prompt
+            # Append tool turn directly — preserves exact ordering required by all providers
+            request.messages = request.messages + [assistant_msg] + tool_results
 
         return response  # type: ignore[return-value]
 
@@ -210,12 +208,10 @@ class Promptable:
     async def _arun_tool_loop(self, prompt: str, extra_messages: list | None = None) -> AgentResponse:
         provider = self._get_provider()
         max_iters = getattr(self, "max_tool_iterations", 10)
-        extra = list(extra_messages or [])
+
+        request = self._build_request(prompt, extra_messages=extra_messages)
 
         for _ in range(max_iters):
-            request = self._build_request(prompt, extra_messages=extra[1:] if extra else None)
-            if extra:
-                request.messages = request.messages[:-1] + extra + [request.messages[-1]]
             response = await provider.acomplete(request)
 
             if not response.tool_calls:
@@ -237,8 +233,7 @@ class Promptable:
                 ],
             }
             tool_results = await getattr(self, "_aexecute_tool_calls", self._fake_aexecute)(response.tool_calls)
-            extra = extra + [assistant_msg] + tool_results
-            prompt = ""
+            request.messages = request.messages + [assistant_msg] + tool_results
 
         return response  # type: ignore[return-value]
 
