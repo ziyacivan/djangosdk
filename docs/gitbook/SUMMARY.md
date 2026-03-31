@@ -73,6 +73,16 @@
 * [Embeddings](embeddings.md)
 * [Audio & Images](audio-images.md)
 
+## Examples
+
+* [Overview](examples/README.md)
+* [Basic Chat](examples/basic-chat.md)
+* [Tool-Calling Agent](examples/tool-calling.md)
+* [Structured Output](examples/structured-output.md)
+* [Reasoning Models](examples/reasoning.md)
+* [RAG / Document Q&A](examples/rag.md)
+* [Multi-Agent Pipeline](examples/multi-agent.md)
+
 ## Reference
 
 * [Agent API](api-reference/agent.md)
