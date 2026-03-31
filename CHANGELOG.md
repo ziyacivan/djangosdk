@@ -15,6 +15,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.1.2] — 2026-03-31
+
+### Fixed
+- `djangosdk.agents.mixins` re-exported `__all__` names without importing them — `from djangosdk.agents.mixins import HasTools` (and all other mixins) raised `ImportError` (#bug)
+- Tool-call loop in `promptable.py` accessed `tc["id"]` and `tc["arguments"]` with hard key lookups; `FakeProvider` tool_calls omit `id` and use `args` — loop now uses `.get("id", f"call_{i}")` and `.get("arguments", tc.get("args", {}))` for both sync and async paths
+- `HasStructuredOutput._validate_structured_output()` was defined but never called — `response.structured` was always `None` even when `output_schema` was set; `handle()` and `ahandle()` now invoke validation before returning
+
+---
+
 ## [0.1.0] — 2026-03-30
 
 ### Added
@@ -68,5 +77,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-[Unreleased]: https://github.com/ziyacivan/django-ai-sdk/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/ziyacivan/django-ai-sdk/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ziyacivan/djangosdk/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/ziyacivan/djangosdk/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/ziyacivan/djangosdk/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/ziyacivan/djangosdk/releases/tag/v0.1.0

@@ -109,6 +109,9 @@ class Promptable:
             )
             raise
 
+        if response.structured is None and hasattr(self, "_validate_structured_output") and response.text:
+            response.structured = self._validate_structured_output(response.text)
+
         self._emit_cache_signal(response)
         self._save_turn(prompt, response)
 
@@ -141,14 +144,14 @@ class Promptable:
                 "content": response.text or "",
                 "tool_calls": [
                     {
-                        "id": tc["id"],
+                        "id": tc.get("id", f"call_{i}"),
                         "type": "function",
                         "function": {
                             "name": tc["name"],
-                            "arguments": json.dumps(tc["arguments"]),
+                            "arguments": json.dumps(tc.get("arguments", tc.get("args", {}))),
                         },
                     }
-                    for tc in response.tool_calls
+                    for i, tc in enumerate(response.tool_calls)
                 ],
             }
             tool_results = getattr(self, "_execute_tool_calls", lambda x: [])(response.tool_calls)
@@ -189,6 +192,9 @@ class Promptable:
             )
             raise
 
+        if response.structured is None and hasattr(self, "_validate_structured_output") and response.text:
+            response.structured = self._validate_structured_output(response.text)
+
         self._emit_cache_signal(response)
         await self._asave_turn(prompt, response)
 
@@ -220,14 +226,14 @@ class Promptable:
                 "content": response.text or "",
                 "tool_calls": [
                     {
-                        "id": tc["id"],
+                        "id": tc.get("id", f"call_{i}"),
                         "type": "function",
                         "function": {
                             "name": tc["name"],
-                            "arguments": json.dumps(tc["arguments"]),
+                            "arguments": json.dumps(tc.get("arguments", tc.get("args", {}))),
                         },
                     }
-                    for tc in response.tool_calls
+                    for i, tc in enumerate(response.tool_calls)
                 ],
             }
             tool_results = await getattr(self, "_aexecute_tool_calls", self._fake_aexecute)(response.tool_calls)
