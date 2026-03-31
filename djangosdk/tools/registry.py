@@ -35,7 +35,12 @@ class ToolRegistry:
             raise ToolError(f"Tool '{name}' not found in registry", tool_name=name)
         fn = self._tools[name]
         try:
+            if inspect.iscoroutinefunction(fn):
+                from asgiref.sync import async_to_sync
+                return async_to_sync(fn)(**arguments)
             return fn(**arguments)
+        except ToolError:
+            raise
         except Exception as exc:
             raise ToolError(f"Tool '{name}' raised {type(exc).__name__}: {exc}", tool_name=name) from exc
 
