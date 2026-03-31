@@ -1,5 +1,7 @@
 # djangosdk
 
+[![PyPI version](https://img.shields.io/pypi/v/djangosdk.svg)](https://pypi.org/project/djangosdk/) [![Python](https://img.shields.io/pypi/pyversions/djangosdk.svg)](https://pypi.org/project/djangosdk/) [![Django](https://img.shields.io/pypi/djversions/djangosdk.svg)](https://pypi.org/project/djangosdk/) [![License](https://img.shields.io/pypi/l/djangosdk.svg)](https://pypi.org/project/djangosdk/)
+
 **djangosdk** is a Django-native AI SDK inspired by the Laravel AI SDK. It provides a unified, agent-centric abstraction over 12+ AI providers, built entirely on top of [litellm](https://github.com/BerriAI/litellm).
 
 ## Why djangosdk?

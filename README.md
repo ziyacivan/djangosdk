@@ -142,7 +142,7 @@ The provider layer is built on litellm. We don't call provider SDKs directly and
 
 ## Documentation
 
-[djangosdk.ai](https://djangosdk.com)
+[docs.djangosdk.com](https://docs.djangosdk.com)
 
 ## License
 

@@ -1,6 +1,6 @@
 # djangosdk Examples
 
-Standalone Django projects demonstrating how to use [djangosdk](https://djangosdk.com).
+Standalone Django projects demonstrating how to use [djangosdk](https://docs.djangosdk.com).
 
 Each example is self-contained. Install `djangosdk`, copy the `.env.example`, and run `manage.py runserver`.
 

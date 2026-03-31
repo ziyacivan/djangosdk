@@ -8,6 +8,8 @@
 
 ## Install from PyPI
 
+**Package:** [pypi.org/project/djangosdk](https://pypi.org/project/djangosdk/)
+
 ```bash
 uv add djangosdk
 ```
