@@ -16,6 +16,32 @@ _DEEPSEEK_REASONING_MODELS = ("deepseek-r1", "deepseek-reasoner")
 _ANTHROPIC_THINKING_MODELS = ("claude-3-7",)
 _GEMINI_THINKING_MODELS = ("gemini-2.5",)
 
+# djangosdk provider key → litellm model prefix (only where they differ)
+_PROVIDER_LITELLM_PREFIX: dict[str, str] = {
+    "together": "together_ai",
+    "vertex": "vertex_ai",
+    "bedrock": "bedrock",
+}
+# Providers that are litellm's default routing — no prefix needed
+_NO_PREFIX_PROVIDERS = {"openai"}
+
+
+def _resolve_litellm_model(model: str, provider: str) -> str:
+    """Add the correct litellm provider prefix to a model string.
+
+    litellm routes requests based on the ``provider/model`` prefix in the
+    model name.  Without the prefix, unprefixed ``gemini-*`` strings are
+    sent to Vertex AI instead of Google AI Studio, and similar misrouting
+    occurs for other providers.  OpenAI is litellm's implicit default and
+    does not need a prefix.
+    """
+    if "/" in model:
+        return model  # already prefixed — respect as-is
+    if provider in _NO_PREFIX_PROVIDERS:
+        return model
+    litellm_prefix = _PROVIDER_LITELLM_PREFIX.get(provider, provider)
+    return f"{litellm_prefix}/{model}"
+
 
 def _is_reasoning_model(model: str) -> tuple[bool, str]:
     """Returns (is_reasoning, model_family)."""
@@ -38,7 +64,7 @@ def _is_reasoning_model(model: str) -> tuple[bool, str]:
 def _build_litellm_params(request: AgentRequest, provider_config: ProviderConfig | None = None) -> dict[str, Any]:
     """Convert AgentRequest to litellm.completion() kwargs."""
     params: dict[str, Any] = {
-        "model": request.model,
+        "model": _resolve_litellm_model(request.model, request.provider),
         "messages": request.messages,
         "temperature": request.temperature,
         "max_tokens": request.max_tokens,
