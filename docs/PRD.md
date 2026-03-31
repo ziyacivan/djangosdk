@@ -1142,6 +1142,220 @@ class SupportAgentTests(TestCase):
         self.assertIn("Result", response.text)
 ```
 
+### Conversational Agent with Episodic Memory
+
+```python
+from djangosdk.agents import Agent
+from djangosdk.agents.mixins import Conversational
+from djangosdk.memory.episodic import EpisodicMemory
+
+class AssistantAgent(Agent, Conversational):
+    provider = "openai"
+    model = "gpt-4.1"
+    system_prompt = "You are a helpful assistant. Remember context from earlier in the conversation."
+    memory = EpisodicMemory(max_episodes=50)
+
+# views.py
+def chat_view(request):
+    agent = AssistantAgent()
+    conversation_id = request.session.get("conversation_id")
+
+    if conversation_id:
+        agent = agent.with_conversation(conversation_id)
+    else:
+        agent = agent.start_conversation()
+        request.session["conversation_id"] = str(agent._conversation_id)
+
+    response = agent.handle(request.POST.get("message", ""))
+    return JsonResponse({"text": response.text})
+```
+
+### Semantic Memory / RAG
+
+```python
+from djangosdk.agents import Agent
+from djangosdk.agents.mixins import HasTools
+from djangosdk.memory.semantic import SemanticMemory
+from djangosdk.tools import tool
+
+class DocumentAgent(Agent, HasTools):
+    provider = "openai"
+    model = "gpt-4.1"
+    system_prompt = "Answer questions using only the provided document context."
+    memory = SemanticMemory(top_k=5)
+
+    @tool
+    def search_documents(self, query: str) -> list[dict]:
+        """Search internal documents for relevant information."""
+        results = self.memory.search(query)
+        return [{"content": r.content, "source": r.metadata.get("source")} for r in results]
+
+# Indexing documents
+agent = DocumentAgent()
+agent.memory.add("Django ORM supports complex queries via Q objects...", metadata={"source": "django-docs"})
+
+# Querying
+response = agent.handle("How do I filter with OR conditions in Django ORM?")
+print(response.text)
+```
+
+### MCP Tool Integration
+
+```python
+from djangosdk.mcp import MCPClient, mcp_tool
+from djangosdk.agents import Agent
+from djangosdk.agents.mixins import HasTools
+
+# Define an MCP tool on an external server
+@mcp_tool
+def fetch_github_issues(repo: str, state: str = "open") -> list[dict]:
+    """Fetch GitHub issues for a repository."""
+    ...
+
+class DevAgent(Agent, HasTools):
+    provider = "anthropic"
+    model = "claude-3-5-sonnet-20241022"
+    system_prompt = "You are a developer assistant with access to GitHub."
+    mcp_client = MCPClient(server_url="http://localhost:8001/mcp/")
+
+agent = DevAgent()
+response = agent.handle("List open issues in my-org/my-repo")
+print(response.text)
+```
+
+### Multi-Agent Orchestration (Handoff + Pipeline)
+
+```python
+from djangosdk.agents import Agent
+from djangosdk.agents.mixins import HasTools
+from djangosdk.orchestration import handoff, pipeline
+
+class SearchAgent(Agent):
+    provider = "openai"
+    model = "gpt-4.1-mini"
+    system_prompt = "Search and gather raw information."
+
+class AnalysisAgent(Agent):
+    provider = "openai"
+    model = "gpt-4.1"
+    system_prompt = "Analyze and synthesize information into structured insights."
+
+class ReportAgent(Agent):
+    provider = "anthropic"
+    model = "claude-3-5-haiku-20241022"
+    system_prompt = "Write a concise executive report from the analysis."
+
+# Pipeline: each agent's output becomes the next agent's input
+research_pipeline = pipeline(SearchAgent(), AnalysisAgent(), ReportAgent())
+result = research_pipeline.run("Summarize recent advances in vector databases")
+print(result.text)
+
+# Handoff: agent delegates mid-conversation
+def route(response):
+    if "code" in response.text.lower():
+        return CodeAgent()
+    return None
+
+result = handoff(TriageAgent(), router=route).run("Help me debug this Python error")
+```
+
+### Rate Limiting + Cost Analytics
+
+```python
+from djangosdk.ratelimit import ai_rate_limit
+from djangosdk.analytics import calculate_cost, cost_report
+
+# Limit to 100 requests/hour per user, 50k tokens/day
+@ai_rate_limit(requests_per_hour=100, tokens_per_day=50_000, key="user")
+def ai_endpoint(request):
+    agent = Agent()
+    response = agent.handle(request.POST["message"])
+
+    cost = calculate_cost(
+        model=agent.model,
+        input_tokens=response.usage.prompt_tokens,
+        output_tokens=response.usage.completion_tokens,
+    )
+    return JsonResponse({"text": response.text, "cost_usd": cost})
+
+# Monthly cost report per model
+report = cost_report(period="month")
+for entry in report:
+    print(f"{entry['model']}: ${entry['total_cost']:.4f} ({entry['total_tokens']} tokens)")
+```
+
+### Observability (LangSmith / Langfuse / OpenTelemetry)
+
+```python
+# settings.py
+AI_SDK = {
+    "DEFAULT_PROVIDER": "openai",
+    "DEFAULT_MODEL": "gpt-4.1",
+    "PROVIDERS": {
+        "openai": {"api_key": env("OPENAI_API_KEY")},
+    },
+    "OBSERVABILITY": {
+        "backend": "langfuse",          # or "langsmith" or "opentelemetry"
+        "langfuse": {
+            "public_key": env("LANGFUSE_PUBLIC_KEY"),
+            "secret_key": env("LANGFUSE_SECRET_KEY"),
+            "host": "https://cloud.langfuse.com",
+        },
+    },
+}
+
+# All agent calls are now automatically traced — no code changes needed
+agent = Agent()
+response = agent.handle("Explain transformers in simple terms.")
+# Trace appears in Langfuse dashboard with tokens, latency, cost
+```
+
+### Image Generation
+
+```python
+from djangosdk.images import generate_image, agenerate_image
+
+# Sync
+result = generate_image(
+    prompt="A futuristic Django logo with neural network patterns",
+    model="dall-e-3",
+    size="1024x1024",
+    quality="hd",
+)
+print(result.url)          # CDN URL
+print(result.revised_prompt)  # DALL-E's refined prompt
+
+# Async (in async Django view)
+async def generate_view(request):
+    result = await agenerate_image(
+        prompt=request.GET["prompt"],
+        model="dall-e-3",
+    )
+    return JsonResponse({"url": result.url})
+```
+
+### Audio: Transcription & Speech Synthesis
+
+```python
+from djangosdk.audio import transcribe, synthesize
+
+# Transcription (Whisper)
+with open("meeting.mp3", "rb") as f:
+    result = transcribe(f, model="whisper-1", language="en")
+print(result.text)
+print(result.duration_seconds)
+
+# Text-to-Speech
+speech = synthesize(
+    text="Welcome to djangosdk. Build AI-powered apps with Django.",
+    model="tts-1-hd",
+    voice="nova",        # alloy, echo, fable, onyx, nova, shimmer
+    speed=1.0,
+)
+with open("welcome.mp3", "wb") as f:
+    f.write(speech.audio_bytes)
+```
+
 ---
 
 ## 12. Dependencies & Security
