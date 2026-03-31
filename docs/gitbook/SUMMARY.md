@@ -76,12 +76,10 @@
 ## Examples
 
 * [Overview](examples/README.md)
-* [Basic Chat](examples/basic-chat.md)
-* [Tool-Calling Agent](examples/tool-calling.md)
-* [Structured Output](examples/structured-output.md)
-* [Reasoning Models](examples/reasoning.md)
-* [RAG / Document Q&A](examples/rag.md)
-* [Multi-Agent Pipeline](examples/multi-agent.md)
+* [E-Commerce Concierge](examples/ecommerce-concierge.md)
+* [Smart Django Shell](examples/smart-django-shell.md)
+* [Product Searcher](examples/product-searcher.md)
+* [ATS Checker](examples/ats-checker.md)
 
 ## Reference
 

@@ -1,28 +1,12 @@
 # Examples
 
-Standalone Django projects that demonstrate djangosdk in action. Each example is self-contained — clone the repo, add your API key, and run `manage.py runserver`.
-
-All examples live in the [`examples/`](https://github.com/ziyacivan/djangosdk/tree/master/examples) directory of the repository. They are **not included** in the PyPI package — `pip install djangosdk` installs only the library.
-
-## Quick Start
-
-```bash
-git clone https://github.com/ziyacivan/djangosdk.git
-cd djangosdk/examples/01-basic-chat
-
-pip install djangosdk
-cp .env.example .env   # add your API key
-python manage.py migrate
-python manage.py runserver
-```
+Real-world Django projects built with djangosdk. Each is a standalone, runnable app — clone, add your API key, and go.
 
 ## Examples at a Glance
 
 | Example | Difficulty | Key Feature |
 |---------|-----------|-------------|
-| [Basic Chat](basic-chat.md) | Beginner | `Agent`, `astream()`, SSE streaming |
-| [Tool-Calling Agent](tool-calling.md) | Beginner | `@tool`, `HasTools`, tool dispatch loop |
-| [Structured Output](structured-output.md) | Beginner | `output_schema`, `response.structured` |
-| [Reasoning Models](reasoning.md) | Intermediate | `ReasoningConfig`, `response.thinking` |
-| [RAG / Document Q&A](rag.md) | Intermediate | `SemanticMemory`, pgvector, PDF ingestion |
-| [Multi-Agent Pipeline](multi-agent.md) | Advanced | `pipeline()`, chained agents |
+| [E-Commerce Concierge](ecommerce-concierge.md) | Beginner | `HasTools`, `Conversational`, `EpisodicMemory` |
+| [Smart Django Shell](smart-django-shell.md) | Intermediate | `HasTools`, structured ORM query generation |
+| [Product Searcher](product-searcher.md) | Intermediate | `SemanticMemory`, pgvector, catalogue embeddings |
+| [ATS Checker](ats-checker.md) | Beginner | `HasStructuredOutput`, Pydantic schema, CV parsing |
