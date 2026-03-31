@@ -86,6 +86,7 @@ def _build_litellm_params(request: AgentRequest, provider_config: ProviderConfig
 
     if request.output_schema:
         model = request.model.lower()
+        has_tools = bool(request.tools)
         if any(m in model for m in ("gpt-4o", "gpt-4.1", "gpt-4-turbo")):
             params["response_format"] = {
                 "type": "json_schema",
@@ -96,7 +97,26 @@ def _build_litellm_params(request: AgentRequest, provider_config: ProviderConfig
                 },
             }
         elif "gemini" in model:
-            params["response_schema"] = request.output_schema
+            if not has_tools:
+                # No tools: use response_format so litellm sets response_mime_type=application/json
+                params["response_format"] = {"type": "json_object"}
+            # With tools: Gemini cannot combine tools + response_mime_type.
+            # Inject the schema into the system prompt so the model knows the
+            # expected output shape; extract_json_from_text handles parsing.
+            else:
+                import json as _json
+                schema_hint = _json.dumps(request.output_schema, indent=2)
+                schema_instruction = (
+                    f"\n\nYou MUST return your final answer as a valid JSON object "
+                    f"matching this exact schema (no markdown, no extra text):\n{schema_hint}"
+                )
+                messages = list(params["messages"])
+                if messages and messages[0].get("role") == "system":
+                    messages[0] = {
+                        **messages[0],
+                        "content": messages[0]["content"] + schema_instruction,
+                    }
+                    params["messages"] = messages
 
     _inject_reasoning_params(params, request)
 

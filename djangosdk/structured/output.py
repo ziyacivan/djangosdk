@@ -44,11 +44,21 @@ class StructuredOutput:
 
     @staticmethod
     def extract_json_from_text(text: str) -> str:
-        """Extract JSON from a text response that may contain markdown code blocks."""
+        """Extract JSON from a text response.
+
+        Handles three formats in priority order:
+        1. Markdown fenced code blocks (```json ... ``` or ``` ... ```)
+        2. Already-valid bare JSON
+        3. First top-level ``{...}`` or ``[...]`` found inside mixed prose
+        """
+        import json
+
         text = text.strip()
+
+        # 1. Markdown fenced block
         if text.startswith("```"):
             lines = text.splitlines()
-            inner = []
+            inner: list[str] = []
             in_block = False
             for line in lines:
                 if line.startswith("```") and not in_block:
@@ -58,5 +68,50 @@ class StructuredOutput:
                     break
                 if in_block:
                     inner.append(line)
-            text = "\n".join(inner).strip()
+            candidate = "\n".join(inner).strip()
+            try:
+                json.loads(candidate)
+                return candidate
+            except (json.JSONDecodeError, ValueError):
+                pass
+
+        # 2. Already valid JSON
+        try:
+            json.loads(text)
+            return text
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+        # 3. Find the outermost { ... } or [ ... ] in mixed prose
+        for start_char, end_char in (("{", "}"), ("[", "]")):
+            start = text.find(start_char)
+            if start == -1:
+                continue
+            depth = 0
+            in_string = False
+            escape_next = False
+            for i, ch in enumerate(text[start:], start):
+                if escape_next:
+                    escape_next = False
+                    continue
+                if ch == "\\" and in_string:
+                    escape_next = True
+                    continue
+                if ch == '"' and not escape_next:
+                    in_string = not in_string
+                    continue
+                if in_string:
+                    continue
+                if ch == start_char:
+                    depth += 1
+                elif ch == end_char:
+                    depth -= 1
+                    if depth == 0:
+                        candidate = text[start: i + 1]
+                        try:
+                            json.loads(candidate)
+                            return candidate
+                        except (json.JSONDecodeError, ValueError):
+                            break
+
         return text
