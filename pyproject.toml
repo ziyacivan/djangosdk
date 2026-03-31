@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "djangosdk"
-version = "0.1.8"
+version = "0.1.9"
 description = "Django-native AI SDK with agent-centric design, multi-provider support, and DRF integration"
 readme = "README.md"
 license = { text = "MIT" }
@@ -23,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 

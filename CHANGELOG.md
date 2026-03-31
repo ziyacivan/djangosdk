@@ -15,6 +15,22 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.1.9] — 2026-04-01
+
+### Fixed
+- Python 3.14 compatibility: `BaseContext.__copy__` in Django 4.x/5.0 replaces an
+  instance's `__dict__` wholesale after reassigning `__class__`, which Python 3.14
+  no longer permits — the object ends up in a broken state causing
+  `AttributeError: 'super' object has no attribute 'dicts'` on any admin list view.
+  `AiSdkConfig.ready()` now applies a targeted patch (`object.__new__` + in-place
+  `__dict__.update`) that is a no-op on Python < 3.14 or Django ≥ 5.1 where the
+  issue does not exist.
+
+### Changed
+- `pyproject.toml`: added `Programming Language :: Python :: 3.14` classifier.
+
+---
+
 ## [0.1.3] — 2026-03-31
 
 ### Changed
@@ -84,7 +100,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-[Unreleased]: https://github.com/ziyacivan/djangosdk/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/ziyacivan/djangosdk/compare/v0.1.9...HEAD
+[0.1.9]: https://github.com/ziyacivan/djangosdk/compare/v0.1.3...v0.1.9
 [0.1.3]: https://github.com/ziyacivan/djangosdk/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/ziyacivan/djangosdk/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/ziyacivan/djangosdk/compare/v0.1.0...v0.1.1
