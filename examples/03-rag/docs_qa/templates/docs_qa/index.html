@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>djangosdk — Document Q&A (RAG)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f5f5f5; min-height: 100vh; padding: 2rem; }
+    .container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 1rem; }
+    h1 { font-size: 1.4rem; color: #333; grid-column: 1/-1; margin-bottom: 0.5rem; }
+    .card { background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid #e0e0e0; }
+    label { display: block; font-weight: 600; font-size: 0.875rem; color: #333; margin-bottom: 0.5rem; }
+    textarea, input[type=text] { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; font-family: inherit; }
+    textarea { resize: vertical; min-height: 80px; }
+    button { width: 100%; padding: 0.6rem; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 0.75rem; font-size: 0.9rem; }
+    button:disabled { opacity: 0.5; }
+    .status { font-size: 0.8rem; color: #666; margin-top: 0.5rem; }
+    #chat { display: flex; flex-direction: column; gap: 0.75rem; min-height: 300px; margin-bottom: 1rem; }
+    .msg { padding: 0.75rem 1rem; border-radius: 10px; line-height: 1.5; font-size: 0.9rem; }
+    .msg.user { background: #333; color: white; align-self: flex-end; max-width: 80%; }
+    .msg.assistant { background: #f0f0f0; align-self: flex-start; max-width: 90%; }
+    .sources { font-size: 0.75rem; color: #888; margin-top: 0.4rem; }
+    .sources span { background: #eee; border-radius: 3px; padding: 1px 6px; margin-right: 3px; }
+    .ask-form { display: flex; gap: 0.5rem; }
+    .ask-form input { flex: 1; }
+    .ask-form button { width: auto; margin-top: 0; padding: 0.6rem 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>djangosdk — Document Q&A (RAG)</h1>
+
+    <div class="card">
+      <div style="margin-bottom:1.5rem;">
+        <label>Upload Document</label>
+        <input type="file" id="file-input" accept=".pdf,.txt,.md">
+        <button onclick="uploadFile()">Index Document</button>
+        <div id="upload-status" class="status"></div>
+      </div>
+      <div>
+        <label>Or paste text</label>
+        <textarea id="text-input" placeholder="Paste document text here..."></textarea>
+        <input type="text" id="source-name" placeholder="Source name (optional)" style="margin-top:0.5rem;">
+        <button onclick="uploadText()">Index Text</button>
+      </div>
+    </div>
+
+    <div class="card" style="display:flex; flex-direction:column;">
+      <div id="chat">
+        <div class="msg assistant">Documents indexed will appear in the left panel. Ask any question about your documents!</div>
+      </div>
+      <div class="ask-form">
+        <input type="text" id="question" placeholder="Ask a question about your documents..." onkeydown="if(event.key==='Enter') ask()">
+        <button onclick="ask()">Ask</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function uploadFile() {
+      const file = document.getElementById('file-input').files[0];
+      if (!file) return alert('Select a file first');
+      const status = document.getElementById('upload-status');
+      status.textContent = 'Indexing...';
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/upload/', { method: 'POST', body: formData });
+      const data = await res.json();
+      status.textContent = data.error || `Indexed ${data.indexed_chunks} chunks from "${data.source}"`;
+    }
+
+    async function uploadText() {
+      const text = document.getElementById('text-input').value.trim();
+      const source = document.getElementById('source-name').value.trim() || 'pasted-text';
+      if (!text) return alert('Enter some text first');
+      const status = document.getElementById('upload-status');
+      status.textContent = 'Indexing...';
+      const formData = new FormData();
+      formData.append('text', text);
+      formData.append('source', source);
+      const res = await fetch('/upload/', { method: 'POST', body: formData });
+      const data = await res.json();
+      status.textContent = data.error || `Indexed ${data.indexed_chunks} chunks from "${data.source}"`;
+    }
+
+    async function ask() {
+      const input = document.getElementById('question');
+      const question = input.value.trim();
+      if (!question) return;
+
+      const chat = document.getElementById('chat');
+      const userMsg = document.createElement('div');
+      userMsg.className = 'msg user';
+      userMsg.textContent = question;
+      chat.appendChild(userMsg);
+      input.value = '';
+
+      const res = await fetch('/ask/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      const data = await res.json();
+
+      const assistantMsg = document.createElement('div');
+      assistantMsg.className = 'msg assistant';
+      assistantMsg.textContent = data.answer || data.error;
+      if (data.sources && data.sources.length) {
+        const sources = document.createElement('div');
+        sources.className = 'sources';
+        sources.innerHTML = 'Sources: ' + data.sources.map(s => `<span>${s}</span>`).join('');
+        assistantMsg.appendChild(sources);
+      }
+      chat.appendChild(assistantMsg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
