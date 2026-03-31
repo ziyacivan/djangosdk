@@ -82,10 +82,25 @@ def test_build_params_openai_structured_output():
     assert params["response_format"]["type"] == "json_schema"
 
 
-def test_build_params_gemini_structured_output():
-    req = _make_request(model="gemini-2.0-flash", output_schema={"type": "object"})
+def test_build_params_gemini_structured_output_no_tools():
+    """Without tools, Gemini gets response_format=json_object (→ response_mime_type)."""
+    req = _make_request(model="gemini-2.0-flash", provider="gemini", output_schema={"type": "object"})
     params = _build_litellm_params(req)
-    assert "response_schema" in params
+    assert params.get("response_format") == {"type": "json_object"}
+    assert "response_schema" not in params
+
+
+def test_build_params_gemini_structured_output_with_tools():
+    """With tools, response_format is omitted; schema injection happens in _build_params."""
+    req = _make_request(
+        model="gemini-2.0-flash",
+        provider="gemini",
+        output_schema={"type": "object"},
+        tools=[{"type": "function", "function": {"name": "my_tool"}}],
+    )
+    params = _build_litellm_params(req)
+    assert "response_format" not in params
+    assert "response_schema" not in params
 
 
 def test_inject_openai_reasoning():

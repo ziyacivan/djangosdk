@@ -96,27 +96,12 @@ def _build_litellm_params(request: AgentRequest, provider_config: ProviderConfig
                     "strict": True,
                 },
             }
-        elif "gemini" in model:
-            if not has_tools:
-                # No tools: use response_format so litellm sets response_mime_type=application/json
-                params["response_format"] = {"type": "json_object"}
-            # With tools: Gemini cannot combine tools + response_mime_type.
-            # Inject the schema into the system prompt so the model knows the
-            # expected output shape; extract_json_from_text handles parsing.
-            else:
-                import json as _json
-                schema_hint = _json.dumps(request.output_schema, indent=2)
-                schema_instruction = (
-                    f"\n\nYou MUST return your final answer as a valid JSON object "
-                    f"matching this exact schema (no markdown, no extra text):\n{schema_hint}"
-                )
-                messages = list(params["messages"])
-                if messages and messages[0].get("role") == "system":
-                    messages[0] = {
-                        **messages[0],
-                        "content": messages[0]["content"] + schema_instruction,
-                    }
-                    params["messages"] = messages
+        elif "gemini" in model and not has_tools:
+            # No tools: use response_format so litellm sets response_mime_type=application/json.
+            # With tools, Gemini cannot combine tools + response_mime_type; the schema hint
+            # is appended to the system prompt in _build_params() where the system message
+            # is already available.
+            params["response_format"] = {"type": "json_object"}
 
     _inject_reasoning_params(params, request)
 
@@ -214,14 +199,32 @@ class LiteLLMProvider(AbstractProvider):
     def _build_params(self, request: AgentRequest) -> dict[str, Any]:
         params = _build_litellm_params(request, self._config)
         system = self._prepare_system(request)
+
+        # Gemini + tools + output_schema: cannot use response_mime_type alongside tools.
+        # Append the JSON schema as an explicit instruction to the system prompt so the
+        # model knows the expected output shape; extract_json_from_text handles parsing.
+        if (
+            request.output_schema
+            and request.tools
+            and "gemini" in request.model.lower()
+        ):
+            import json as _json
+
+            schema_hint = _json.dumps(request.output_schema, indent=2)
+            schema_instruction = (
+                "\n\nYou MUST return your final answer as a valid JSON object "
+                f"matching this exact schema (no markdown, no extra text):\n{schema_hint}"
+            )
+            if isinstance(system, str):
+                system = (system or "") + schema_instruction
+            elif not system:
+                system = schema_instruction.strip()
+
         if system:
             # Inject system as first message if not already present
             msgs = list(params["messages"])
             if not msgs or msgs[0].get("role") != "system":
-                if isinstance(system, list):
-                    msgs.insert(0, {"role": "system", "content": system})
-                else:
-                    msgs.insert(0, {"role": "system", "content": system})
+                msgs.insert(0, {"role": "system", "content": system})
                 params["messages"] = msgs
         return params
 
