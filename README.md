@@ -1,6 +1,8 @@
 [![PyPI version](https://badge.fury.io/py/djangosdk.svg)](https://pypi.org/project/djangosdk/)
+[![Downloads](https://img.shields.io/pypi/dm/djangosdk.svg)](https://pypi.org/project/djangosdk/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/djangosdk.svg)](https://pypi.org/project/djangosdk/)
+[![Django](https://img.shields.io/badge/Django-4.2%2B-green.svg)](https://djangoproject.com)
 
 # djangosdk
 
@@ -143,6 +145,10 @@ The provider layer is built on litellm. We don't call provider SDKs directly and
 ## Documentation
 
 [docs.djangosdk.com](https://docs.djangosdk.com)
+
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
