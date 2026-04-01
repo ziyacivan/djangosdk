@@ -6,8 +6,8 @@ Thank you for your interest in contributing! This document explains how to get s
 
 ```bash
 # Clone the repo
-git clone https://github.com/ziyacivan/django-ai-sdk.git
-cd django-ai-sdk
+git clone https://github.com/ziyacivan/djangosdk.git
+cd djangosdk
 
 # Install with dev extras (using uv)
 uv add --editable ".[dev]"
@@ -75,7 +75,7 @@ The decorator automatically generates the OpenAI-compatible JSON schema from typ
 Open an issue on GitHub with:
 - Python version
 - Django version
-- `django-ai-sdk` version
+- `djangosdk` version
 - Minimal reproduction script
 - Expected vs actual behavior
 
