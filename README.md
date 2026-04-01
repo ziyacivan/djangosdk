@@ -132,15 +132,16 @@ The provider layer is built on litellm. We don't call provider SDKs directly and
 
 ## How it compares
 
-|  | djangosdk | django-ai-assistant | LangChain |
-| --- | --- | --- | --- |
-| Provider support | 12+ via litellm | OpenAI only | Many |
-| Django-native | Yes | Partial | No |
-| Reasoning model support | Yes | No | Partial |
-| Prompt caching | Yes (Anthropic + OpenAI) | No | No |
-| DRF views + serializers | Yes | No | No |
-| Test utilities | Yes | No | No |
-| MCP | Yes | No | No |
+|  | djangosdk | django-ai-assistant | LangChain | Pydantic AI |
+| --- | --- | --- | --- | --- |
+| Provider support | 12+ via litellm | OpenAI only | Many | Several |
+| Django-native | Yes | Partial | No | No |
+| Reasoning model support | Yes | No | Partial | Partial |
+| Prompt caching | Yes (Anthropic + OpenAI) | No | No | No |
+| DRF views + serializers | Yes | No | No | No |
+| ORM conversation history | Yes | No | No | No |
+| Test utilities | Yes | No | No | Yes |
+| MCP | Yes | No | No | Yes |
 
 ## Documentation
 
